@@ -1,2 +1,5 @@
-Hack Peel:
-alex edit
+Hack Peel: 
+
+Collaborators: Vishwas, Shaya, Alex, Rafi
+
+Hopefully all goes well
