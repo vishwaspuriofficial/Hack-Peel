@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 
 
-public class Event {
+public class Event implements Cloneable{
     String title;
     String startTime;
     String endTime;
@@ -31,7 +31,10 @@ public class Event {
         stressLevel = _stressLevel;
     }
 
-
+    public Object clone() throws CloneNotSupportedException
+    {
+        return super.clone();
+    }
     public String getTitle() {
         return title;
     }
