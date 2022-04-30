@@ -3,10 +3,7 @@ package Execution;
 import Scripts.Event;
 import UserInterface.MainFrame;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 import java.io.*;
 
 public class Main {
@@ -69,4 +66,39 @@ public class Main {
         }
         return dates;
     }
+    public void saveEvent(Event event) throws IOException {
+        FileWriter file = new FileWriter(event.getPath(),true);
+        PrintWriter write = new PrintWriter(file);
+
+        write.print("#"+event.getDate());
+
+        String[] repeatDates = event.getRepeatDate().toArray(new String[0]);
+        String repeat = String.join(",", repeatDates);
+
+        String[] linkedEvents = event.getLinkedEvents().toArray(new String[0]);
+        String events = String.join(",", linkedEvents);
+
+        write.print(event.getTitle()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeat+"∂"+events+"∂"+event.getStressLevel());
+
+        write.close();
+    }
+
+
+    public void saveRepeatedEvent(Event event) throws IOException {
+        FileWriter file = new FileWriter(event.getPath(),true);
+        PrintWriter write = new PrintWriter(file);
+
+        write.print("#"+event.getTitle());
+
+        String[] repeatDates = event.getRepeatDate().toArray(new String[0]);
+        String repeat = String.join(",", repeatDates);
+
+        String[] linkedEvents = event.getLinkedEvents().toArray(new String[0]);
+        String events = String.join(",", linkedEvents);
+
+        write.print(event.getDate()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeat+"∂"+events+"∂"+event.getStressLevel());
+
+        write.close();
+    }
+
 }
