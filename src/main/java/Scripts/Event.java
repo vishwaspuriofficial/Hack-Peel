@@ -34,20 +34,10 @@ public class Event {
 
     public void saveToFile() throws IOException {
 //
-//        File file = new File(path);
-//        Scanner sc = new Scanner(file);
-//
-//        while (sc.hasNextLine()) {
-//            if (sc.nextLine().contains(date)) {
-//
-//            }
-//        }
-//
-//
-//        FileWriter filse= new FileWriter(path,true);
-//        PrintWriter write = new PrintWriter(file);
-//
-//
+        FileWriter file = new FileWriter(path,true);
+        PrintWriter write = new PrintWriter(file);
+
+
 //        write.print("#day("+date+")\n");
 //
 //        write.close();
