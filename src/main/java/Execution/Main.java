@@ -12,11 +12,11 @@ public class Main {
     private static HashMap<String, LinkedList<Event>> plannedDatesData = new HashMap<>();
     private static LinkedList<Event> repeatingEvents = new LinkedList<>();
 
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws IOException, ParseException, CloneNotSupportedException {
         loadMainSave();
         loadRepeatedDays();
         gui = new MainFrame();
-        Event test = new Event("Gym","30/04/2022","10:00am","10:45am",new ArrayList<>(Arrays.asList("1","2")),new ArrayList<>(Arrays.asList("Shower")),4);
+        Event test = new Event("Gym","30/04/2022","10:00","10:30",new ArrayList<>(Arrays.asList("1","2")),new ArrayList<>(Arrays.asList("Shower")),4);
         saveEvent(test);
         saveRepeatedEvent(test);
     }
