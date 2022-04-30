@@ -1,9 +1,17 @@
 package Scripts;
 
+import Execution.Main;
+
+import java.time.LocalDate;
+import java.time.temporal.IsoFields;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
-
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Locale;
 
 
 public class DateStorage {
@@ -33,6 +41,66 @@ public class DateStorage {
     }
 
 
+
+    public void addEventToDate(String date, LinkedList<Event> _event){
+        HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
+        plannedDatesData.put(date, _event);
+    }
+
+    public void deleteEventAtDate(String date, String title){
+        HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
+        plannedDatesData.remove("",title);
+    }
+
+    public LinkedList<Event>[] getSuggestions(String _date, Event _event){
+        HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
+        LinkedList<Event> mainEvents = plannedDatesData.get(_date);
+        LinkedList<Event> repeatedEvents = Main.getRepeatingEvents();
+
+        String[] splitted = _date.split("/");
+        int day = Integer.parseInt(splitted[0]);
+        int month = Integer.parseInt(splitted[1]);
+        int year = Integer.parseInt(splitted[2]);
+
+        LocalDate date = LocalDate.of(year, month, day);
+
+        int eventDay = 0;
+
+        switch(date.getDayOfWeek().toString()){
+            case "MONDAY":
+                eventDay = 1;
+                break;
+            case "TUESDAY":
+                eventDay = 2;
+                break;
+            case "WEDNESDAY":
+                eventDay = 3;
+                break;
+            case "THURSDAY":
+                eventDay = 4;
+                break;
+            case "FRIDAY":
+                eventDay = 5;
+                break;
+            case "SATURDAY":
+                eventDay = 6;
+                break;
+            case "SUNDAY":
+                eventDay = 7;
+                break;
+        }
+
+        for(Event event : repeatedEvents) {
+            for (String repeatDay : event.repeatDate){
+                if(Integer.parseInt(repeatDay) == eventDay)//Check to see if main events list of the date chosen requires the merge of repeated events
+                {
+                    mainEvents.add(event); //Adds
+                }
+            }
+        }
+
+        return null;
+    }
 
     
 }
