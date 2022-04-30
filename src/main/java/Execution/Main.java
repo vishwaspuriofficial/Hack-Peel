@@ -47,7 +47,7 @@ public class Main {
         }
     }
 
-    public LinkedList<String> loadRepeatedDays() throws IOException {
+    public LinkedList<Event> loadRepeatedDays() throws IOException {
         LinkedList<Event> dates = null;
         String path = "src/main/java/Databases/repeat.txt";
         File file = new File(path);
@@ -55,18 +55,17 @@ public class Main {
 
         String line = br.readLine();
         while (line!= null) {
-            String eventName = line.split("# ")[0];
             if (line.charAt(0)=='#') {
+                String eventName = line.split("# ")[0];
                 String[] data = br.readLine().split("∂");
                 String[] repeat = data[3].split(",");
                 ArrayList<String> repeatedDays = new ArrayList<>(Arrays.asList(repeat));
                 String[] link = data[4].split(",");
                 ArrayList<String> linkedEvents = new ArrayList<>(Arrays.asList(link));
                 Event event = new Event(eventName,data[0],data[1],data[2],repeatedDays,linkedEvents,Integer.parseInt(data[5]));
+                dates.add(event);
             }
-
-
         }
-        return null;
+        return dates;
     }
 }
