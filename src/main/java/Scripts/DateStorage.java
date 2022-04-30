@@ -50,7 +50,7 @@ public class DateStorage {
 
     public void deleteEventAtDate(String date, String title){
         HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
-        plannedDatesData.remove("",title);
+        plannedDatesData.remove(date,title);
     }
 
     public int getEventDay(LocalDate date){
@@ -81,9 +81,10 @@ public class DateStorage {
         return eventDay;
     }
 
-    public LinkedList<Event>[] getSuggestions(String _date, Event _event){
+    public LinkedList<Event> getMerge(String _date){
+
         HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
-        LinkedList<Event> mainEvents = plannedDatesData.get(_date);
+        LinkedList<Event> mainEvents = (LinkedList<Event>) plannedDatesData.get(_date).clone();
         LinkedList<Event> repeatedEvents = Main.getRepeatingEvents();
 
         String[] splitted = _date.split("/");
@@ -104,12 +105,18 @@ public class DateStorage {
                 }
             }
         }
+        return mainEvents;
+    }
 
+    public LinkedList<Event>[] getSuggestions(String _date, Event _event){
+        getMerge(_date);
         //Algorithm part
-        ArrayList<Float> x = new ArrayList<>();
-        for(Event event : mainEvents){
 
-        }
+        ArrayList<Float> x = new ArrayList<>();
+        //for(Event event : mainEvents){
+
+          //  x.add()
+        //}
 
         return null;
     }
