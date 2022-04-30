@@ -108,11 +108,13 @@ public class DateStorage {
         return mainEvents;
     }
 
-    public LinkedList<Event>[] getSuggestions(String _date, Event _event){
+    public LinkedList<Event>[] getSuggestions(String _date, Event _event) throws CloneNotSupportedException {
         LinkedList<Event> mainEvents = getMerge(_date);
         //Algorithm part
 
         ArrayList<Float> startTimeLst = new ArrayList<>();
+        ArrayList<Float> availableTimeSlots = new ArrayList<>();
+
         for(Event event : mainEvents){
             String[] split = event.startTime.split(":");
             float time = Float.parseFloat(split[0]) + Float.parseFloat(".".join(split[1]));
@@ -122,7 +124,45 @@ public class DateStorage {
 
         Collections.sort(startTimeLst);
 
-        
+
+        //Find all open timeslots
+        float currentTime = 0.0f;
+
+        //Very high potential to be very bad (just smth in case I can't find a better solution)
+        for(int i = 0; i < startTimeLst.size();){
+            if(currentTime == startTimeLst.get(i)){
+                i++;
+            }
+            else{
+                availableTimeSlots.add(currentTime);
+            }
+            currentTime += 0.30;
+
+        }
+
+        //Get Possible solutions from list of open timeslots, *Get them 1-4 hours away from each other*
+        int space = 0;
+
+        Event sol1 = (Event)_event.clone();
+        sol1.startTime = "";
+        sol1.endTime = "";
+
+        Event sol2 = (Event)_event.clone();
+        sol2.startTime = "";
+        sol2.endTime = "";
+
+        Event sol3 = (Event)_event.clone();
+        sol3.startTime = "";
+        sol3.endTime = "";
+
+        for(int i = 0; i < availableTimeSlots.size(); i++){
+            if(space == 0){
+
+            }
+            else{
+
+            }
+        }
 
 
 
