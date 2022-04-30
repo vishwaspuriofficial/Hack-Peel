@@ -3,6 +3,7 @@ package Execution;
 import Scripts.Event;
 import UserInterface.MainFrame;
 import java.io.File;
+import java.text.ParseException;
 import java.util.*;
 import java.io.*;
 
@@ -11,7 +12,7 @@ public class Main {
     private static HashMap<String, LinkedList<Event>> plannedDatesData = new HashMap<>();
     private static LinkedList<Event> repeatingEvents = new LinkedList<>();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParseException {
         loadMainSave();
         loadRepeatedDays();
         gui = new MainFrame();
