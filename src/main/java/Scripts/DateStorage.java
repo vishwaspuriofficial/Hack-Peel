@@ -110,23 +110,27 @@ public class DateStorage {
 
     public LinkedList<Event>[] getSuggestions(String _date, Event _event) throws CloneNotSupportedException {
         LinkedList<Event> mainEvents = getMerge(_date);
-        //Algorithm part
 
+        //Algorithm part
         ArrayList<Float> startTimeLst = new ArrayList<>();
         ArrayList<Float> availableTimeSlots = new ArrayList<>();
 
+        //Getting the dates from string to float, and storing all these busy slots to start time lst
         for(Event event : mainEvents){
             String[] split = event.startTime.split(":");
-            float time = Float.parseFloat(split[0]) + Float.parseFloat(".".join(split[1]));
+            float hour = Float.parseFloat(split[0]);
+            float minute = Float.parseFloat(".".join(split[1]));
+            if(minute == 0.30){
+                minute += 0.20;
+            }
+            float time = hour+minute;
             startTimeLst.add(time);
         }
-
-
         Collections.sort(startTimeLst);
 
 
         //Find all open timeslots
-        float currentTime = 0.0f;
+        float currentTime = 0.0f; //float flaw
 
         //Very high potential to be very bad (just smth in case I can't find a better solution)
         for(int i = 0; i < startTimeLst.size();){
@@ -136,38 +140,59 @@ public class DateStorage {
             else{
                 availableTimeSlots.add(currentTime);
             }
-            currentTime += 0.30;
+            currentTime += 0.50;
 
         }
 
-        //Get Possible solutions from list of open timeslots, *Get them 1-4 hours away from each other*
+        //preparing the list of possible solutions
+        LinkedList<Event>[] possibleSolutions = new LinkedList[2];
+        ArrayList<Float> maybeTimeSlots = new ArrayList<Float>();
+
+        //Get Possible solutions from list of open timeslots, *Get them 1-4 hours away from each other* (if events are static)
         int space = 0;
-
-        Event sol1 = (Event)_event.clone();
-        sol1.startTime = "";
-        sol1.endTime = "";
-
-        Event sol2 = (Event)_event.clone();
-        sol2.startTime = "";
-        sol2.endTime = "";
-
-        Event sol3 = (Event)_event.clone();
-        sol3.startTime = "";
-        sol3.endTime = "";
-
+        int solutionIndex = 0;
         for(int i = 0; i < availableTimeSlots.size(); i++){
+            if(solutionIndex == 3){
+                break;
+            }
+
             if(space == 0){
 
+                Event solEvent = (Event) _event.clone();
+                float newStartTime = availableTimeSlots.get(i);
+                float newEndTime;
+                if(newStartTime - (newStartTime-0.5f) == 0.5){
+                    newStartTime -= 0.20;
+                }
+                newEndTime = newStartTime + 0.30f;
+                solEvent.startTime = String.valueOf(newStartTime);
+                solEvent.endTime = String.valueOf(newEndTime);
+
+                possibleSolutions[solutionIndex].add(solEvent);
+
+                solutionIndex += 1;
+                space = 5;
             }
             else{
-
+                space -= 5;
+                maybeTimeSlots.add(availableTimeSlots.get(i));
             }
         }
 
+        if (solutionIndex != 3){
+            for(int i = 0; i < solutionIndex; i++){
+                float newStartTime = maybeTimeSlots.get(i);
+                float newEndTime = 0;
+                if(newStartTime - (newStartTime-0.5f) == 0.5){
+                    newStartTime -= 0.20;
+                }
+                newEndTime = newStartTime+0.30f;
+            }
+        }
 
-
-        return null;
+        return possibleSolutions;
     }
+
 
     
 }
