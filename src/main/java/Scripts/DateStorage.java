@@ -13,9 +13,6 @@ public class DateStorage {
         events = _events;
     }
 
-    public void saveToFile(){
-
-    }
 
     public ArrayList<Event> getEvents(){
         ArrayList<Event> _event = new ArrayList<>();
