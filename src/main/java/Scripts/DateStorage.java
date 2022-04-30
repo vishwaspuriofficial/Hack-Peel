@@ -109,7 +109,7 @@ public class DateStorage {
     }
 
     public LinkedList<Event>[] getSuggestions(String _date, Event _event) throws CloneNotSupportedException {
-        LinkedList<Event> mainEvents = getMerge(_date);
+        LinkedList<Event> mainEvents = Main.getPlannedDatesData().get(_date);
 
         //Algorithm part
         ArrayList<Float> startTimeLst = new ArrayList<>();
