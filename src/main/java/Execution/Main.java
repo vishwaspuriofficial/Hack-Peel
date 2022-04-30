@@ -9,6 +9,7 @@ import java.io.*;
 public class Main {
     private static MainFrame gui;
     private static HashMap<String, LinkedList<Event>> plannedDatesData = new HashMap<>();
+    private static LinkedList<Event> repeatingEvents = new LinkedList<>();
 
     public static void main(String[] args) throws IOException {
         loadMainSave();
@@ -21,6 +22,10 @@ public class Main {
 
     public static HashMap<String, LinkedList<Event>> getPlannedDatesData() {
         return plannedDatesData;
+    }
+
+    public static LinkedList<Event> getRepeatingEvents() {
+        return repeatingEvents;
     }
 
     public static void loadMainSave() throws IOException {
@@ -36,7 +41,6 @@ public class Main {
                 currentDate = line;
             } else {
                 String[] attributes = line.split("∂");
-                //FIXME: ask shaya about the arraylist and linkedlist
                 ArrayList<String> attr3 = new ArrayList<>(Arrays.asList(attributes[3].split(",")));
                 ArrayList<String> attr4 = new ArrayList<>(Arrays.asList(attributes[4].split(",")));
                 plannedDatesData.get(currentDate).add(new Event(attributes[0], line.replace("#", ""), attributes[1], attributes[2], attr3, attr4, Integer.parseInt(attributes[5])));
@@ -45,8 +49,7 @@ public class Main {
         }
     }
 
-    public LinkedList<Event> loadRepeatedDays() throws IOException {
-        LinkedList<Event> dates = null;
+    public void loadRepeatedDays() throws IOException {
         String path = "src/main/java/Databases/repeat.txt";
         File file = new File(path);
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -61,10 +64,9 @@ public class Main {
                 String[] link = data[4].split(",");
                 ArrayList<String> linkedEvents = new ArrayList<>(Arrays.asList(link));
                 Event event = new Event(eventName,data[0],data[1],data[2],repeatedDays,linkedEvents,Integer.parseInt(data[5]));
-                dates.add(event);
+                repeatingEvents.add(event);
             }
         }
-        return dates;
     }
     public void saveEvent(Event event) throws IOException {
         FileWriter file = new FileWriter(event.getPath(),true);
