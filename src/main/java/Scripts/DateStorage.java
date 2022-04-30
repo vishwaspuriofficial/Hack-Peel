@@ -3,6 +3,7 @@ package Scripts;
 import Execution.Main;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.IsoFields;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
@@ -52,20 +53,8 @@ public class DateStorage {
         plannedDatesData.remove("",title);
     }
 
-    public LinkedList<Event>[] getSuggestions(String _date, Event _event){
-        HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
-        LinkedList<Event> mainEvents = plannedDatesData.get(_date);
-        LinkedList<Event> repeatedEvents = Main.getRepeatingEvents();
-
-        String[] splitted = _date.split("/");
-        int day = Integer.parseInt(splitted[0]);
-        int month = Integer.parseInt(splitted[1]);
-        int year = Integer.parseInt(splitted[2]);
-
-        LocalDate date = LocalDate.of(year, month, day);
-
+    public int getEventDay(LocalDate date){
         int eventDay = 0;
-
         switch(date.getDayOfWeek().toString()){
             case "MONDAY":
                 eventDay = 1;
@@ -89,7 +78,24 @@ public class DateStorage {
                 eventDay = 7;
                 break;
         }
+        return eventDay;
+    }
 
+    public LinkedList<Event>[] getSuggestions(String _date, Event _event){
+        HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
+        LinkedList<Event> mainEvents = plannedDatesData.get(_date);
+        LinkedList<Event> repeatedEvents = Main.getRepeatingEvents();
+
+        String[] splitted = _date.split("/");
+        int day = Integer.parseInt(splitted[0]);
+        int month = Integer.parseInt(splitted[1]);
+        int year = Integer.parseInt(splitted[2]);
+
+        LocalDate date = LocalDate.of(year, month, day);
+
+        int eventDay = getEventDay(date);
+
+        //Merge repeated and main events
         for(Event event : repeatedEvents) {
             for (String repeatDay : event.repeatDate){
                 if(Integer.parseInt(repeatDay) == eventDay)//Check to see if main events list of the date chosen requires the merge of repeated events
@@ -97,6 +103,12 @@ public class DateStorage {
                     mainEvents.add(event); //Adds
                 }
             }
+        }
+
+        //Algorithm part
+        ArrayList<Float> x = new ArrayList<>();
+        for(Event event : mainEvents){
+
         }
 
         return null;
