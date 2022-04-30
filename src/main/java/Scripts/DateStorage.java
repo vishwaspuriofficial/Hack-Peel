@@ -108,7 +108,7 @@ public class DateStorage {
         return mainEvents;
     }
 
-    public LinkedList<Event>[] getSuggestions(String _date, Event _event) throws CloneNotSupportedException {
+    public static LinkedList<Event>[] getSuggestions(String _date, Event _event) throws CloneNotSupportedException {
         LinkedList<Event> mainEvents = Main.getPlannedDatesData().get(_date);
 
         //Algorithm part
@@ -119,9 +119,9 @@ public class DateStorage {
         for(Event event : mainEvents){
             String[] split = event.startTime.split(":");
             float hour = Float.parseFloat(split[0]);
-            float minute = Float.parseFloat(".".join(split[1]));
-            if(minute == 0.30){
-                minute += 0.20;
+            float minute = Float.parseFloat((split[1]))/10;
+            if(minute == 0.3){
+                minute += 0.2;
             }
             float time = hour+minute;
             startTimeLst.add(time);
@@ -146,13 +146,14 @@ public class DateStorage {
 
         //preparing the list of possible solutions
         LinkedList<Event>[] possibleSolutions = new LinkedList[2];
+        Arrays.fill(possibleSolutions,new LinkedList<Event>());
         ArrayList<Float> maybeTimeSlots = new ArrayList<Float>();
 
         //Get Possible solutions from list of open timeslots, *Get them 1-4 hours away from each other* (if events are static)
         int space = 0;
         int solutionIndex = 0;
         for(int i = 0; i < availableTimeSlots.size(); i++){
-            if(solutionIndex == 3){
+            if(solutionIndex == 2){
                 break;
             }
 
@@ -179,7 +180,7 @@ public class DateStorage {
             }
         }
 
-        if (solutionIndex != 3){
+        if (solutionIndex != 2){
             for(int i = 0; i < solutionIndex; i++){
                 Event solEvent = (Event) _event.clone();
                 float newStartTime = maybeTimeSlots.get(i);
