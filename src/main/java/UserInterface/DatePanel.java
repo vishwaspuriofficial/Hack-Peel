@@ -1,2 +1,14 @@
-package UserInterface;public class DatePanel {
+package UserInterface;
+
+import javax.swing.*;
+
+public class DatePanel extends JPanel {
+
+    public DatePanel() {
+
+    }
+
+    public void setDate() {
+
+    }
 }
