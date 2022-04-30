@@ -103,8 +103,7 @@ public class CalendarPanel extends JPanel implements ActionListener {
         plannedDatesList.removeAll();
         plannedDatesList.setPreferredSize(new Dimension(800, dataMap.size()==0? 500 : 120*hmSize));
         scrollPaneContainer.setPreferredSize(new Dimension(800, 120*hmSize));
-        if (0==0) {
-            //shift down with margin
+        if (hmSize==0) {
             plannedDatesList.add(message);
             plannedDatesList.setLayout(new FlowLayout(0, 25, 180));
         } else {
