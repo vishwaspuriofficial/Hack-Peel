@@ -1,10 +1,14 @@
 package UserInterface;
 
+import Scripts.Event;
+
 import static Assets.Pallete.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class CalendarPanel extends JPanel implements ActionListener {
     private JPanel centerPanel, searchHeaderPanel, scrollPaneContainer, plannedDatesList;
@@ -38,7 +42,6 @@ public class CalendarPanel extends JPanel implements ActionListener {
         plannedDatesList = new JPanel();
 
         scrollPaneContainer = new JPanel();
-        scrollPaneContainer.setPreferredSize(new Dimension(800, 800));
         scrollPaneContainer.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         scrollPaneContainer.add(plannedDatesList);
 
@@ -94,16 +97,22 @@ public class CalendarPanel extends JPanel implements ActionListener {
 
     //FIXME: update the updatelist method later when the list is acquired
     public void updateList() {
+        HashMap<String, LinkedList<Event>> dataMap = Execution.Main.getPlannedDatesData();
+        int hmSize = dataMap.size();
+        System.out.println(hmSize);
         plannedDatesList.removeAll();
-        plannedDatesList.setPreferredSize(new Dimension(800, 120*0));
+        plannedDatesList.setPreferredSize(new Dimension(800, dataMap.size()==0? 500 : 120*hmSize));
+        scrollPaneContainer.setPreferredSize(new Dimension(800, 120*hmSize));
         if (0==0) {
             //shift down with margin
-            scrollPaneContainer.add(message);
+            plannedDatesList.add(message);
+            plannedDatesList.setLayout(new FlowLayout(0, 25, 180));
         } else {
             for (char needDateHere : "haha".toCharArray()) {
                 //Date current = needDateHere;
                 PlannedDate panelItem = new PlannedDate();
                 panelItem.colorTheme();
+                plannedDatesList.setLayout(new FlowLayout(0, 0, 0));
                 plannedDatesList.add(panelItem);
             }
         }
@@ -126,6 +135,7 @@ public class CalendarPanel extends JPanel implements ActionListener {
         eastMargin2.setBackground(dmainBackColor);
         message.setBackground(dlistBackColor);
         message.setForeground(dlabelForeColor);
+        plannedDatesList.setBackground(dlistBackColor);
     }
 
     public static class PlannedDate extends JPanel {
@@ -148,8 +158,7 @@ public class CalendarPanel extends JPanel implements ActionListener {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     //FIXME: pass the correct param
-                        //also the Main isn't working
-//                    Main.getGui.showDate();
+                    Execution.Main.getGui().showDate();
                 }
             });
             this.add(date);
