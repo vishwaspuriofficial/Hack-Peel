@@ -13,8 +13,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         loadMainSave();
+        loadRepeatedDays();
         gui = new MainFrame();
-
+        Event test = new Event("Gym","30/04/2022","10:00am","10:45am",new ArrayList<>(Arrays.asList("1","2")),new ArrayList<>(Arrays.asList("Shower")),4);
+        saveRepeatedEvent(test);
     }
 
     public static MainFrame getGui() {
@@ -49,7 +51,7 @@ public class Main {
 
     }
 
-    public void loadRepeatedDays() throws IOException {
+    public static void loadRepeatedDays() throws IOException {
         String path = "src/main/java/Databases/repeat.txt";
         File file = new File(path);
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -66,6 +68,7 @@ public class Main {
                 Event event = new Event(eventName,data[0],data[1],data[2],repeatedDays,linkedEvents,Integer.parseInt(data[5]));
                 repeatingEvents.add(event);
             }
+            line = br.readLine();
         }
     }
     public static void saveEvent(Event event) throws IOException {
@@ -90,8 +93,12 @@ public class Main {
     }
 
 
-    public void saveRepeatedEvent(Event event) throws IOException {
-        FileWriter file = new FileWriter("src/main/java/Databases/mainsave.txt",true);
+    public static void saveRepeatedEvent(Event event) throws IOException {
+        //Deletes original content of file
+        PrintWriter pw = new PrintWriter(new FileOutputStream("src/main/java/Databases/repeat.txt", false));
+
+        //Overwrites the content
+        FileWriter file = new FileWriter("src/main/java/Databases/repeat.txt",true);
         PrintWriter write = new PrintWriter(file);
 
         write.print("#"+event.getTitle());
