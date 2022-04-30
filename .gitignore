@@ -142,6 +142,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+${project.build.directory}/
 
 
 ###Maven###
