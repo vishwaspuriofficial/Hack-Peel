@@ -2,17 +2,17 @@ package Scripts;
 
 import Execution.Main;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.IsoFields;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
+import java.util.*;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Locale;
 
 
 public class DateStorage {
@@ -43,9 +43,9 @@ public class DateStorage {
 
 
 
-    public void addEventToDate(String date, LinkedList<Event> _event){
+    public void addEventToDate(String _date, LinkedList<Event> _event) throws ParseException {
         HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
-        plannedDatesData.put(date, _event);
+        plannedDatesData.put(_date, _event);
     }
 
     public void deleteEventAtDate(String date, String title){
