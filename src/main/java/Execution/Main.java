@@ -55,8 +55,8 @@ public class Main {
 
         String line = br.readLine();
         while (line!= null) {
-            String eventName = line.split("# ")[0];
             if (line.charAt(0)=='#') {
+                String eventName = line.split("# ")[0];
                 String[] data = br.readLine().split("∂");
                 String[] repeat = data[3].split(",");
                 ArrayList<String> repeatedDays = new ArrayList<>(Arrays.asList(repeat));
