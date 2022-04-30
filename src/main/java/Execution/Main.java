@@ -12,6 +12,7 @@ import java.io.*;
 public class Main {
     private static MainFrame gui;
     private static HashMap<String, LinkedList<Event>> plannedDatesData = new HashMap<>();
+    private static LinkedList<Event> repeatingEvents = new LinkedList<>();
 
     public static void main(String[] args) throws IOException {
         loadMainSave();
@@ -24,6 +25,10 @@ public class Main {
 
     public static HashMap<String, LinkedList<Event>> getPlannedDatesData() {
         return plannedDatesData;
+    }
+
+    public static LinkedList<Event> getRepeatingEvents() {
+        return repeatingEvents;
     }
 
     public static void loadMainSave() throws IOException {
@@ -47,8 +52,7 @@ public class Main {
         }
     }
 
-    public LinkedList<Event> loadRepeatedDays() throws IOException {
-        LinkedList<Event> dates = null;
+    public void loadRepeatedDays() throws IOException {
         String path = "src/main/java/Databases/repeat.txt";
         File file = new File(path);
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -63,9 +67,8 @@ public class Main {
                 String[] link = data[4].split(",");
                 ArrayList<String> linkedEvents = new ArrayList<>(Arrays.asList(link));
                 Event event = new Event(eventName,data[0],data[1],data[2],repeatedDays,linkedEvents,Integer.parseInt(data[5]));
-                dates.add(event);
+                repeatingEvents.add(event);
             }
         }
-        return dates;
     }
 }
