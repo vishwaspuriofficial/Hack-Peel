@@ -23,19 +23,20 @@ public class CalendarPanel extends JPanel implements ActionListener {
         this.setLayout(new BorderLayout());
 
         searchbox = new JTextField();
-        searchbox.setFont(new Font("", Font.PLAIN, 56));
-        searchbox.setPreferredSize(new Dimension(620, 100));
+        searchbox.setFont(new Font("", Font.PLAIN, 24));
+        searchbox.setPreferredSize(new Dimension(620, 70));
+        searchbox.setText("Which day do you like to plan?");
         searchbox.addActionListener(this);
 
-        searchButton = new JButton("search");
-        searchButton.setFont(new Font("Georgia", Font.PLAIN, 24));
+        searchButton = new JButton("Search");
+        searchButton.setFont(new Font("Georgia", Font.PLAIN, 28));
         searchButton.setBorderPainted(false);
         searchButton.setOpaque(true);
-        searchButton.setPreferredSize(new Dimension(160, 90));
+        searchButton.setPreferredSize(new Dimension(160, 70));
         searchButton.addActionListener(this);
 
         searchHeaderPanel = new JPanel();
-        searchHeaderPanel.setLayout(new FlowLayout(0, 40, 50));
+        searchHeaderPanel.setLayout(new FlowLayout(0, 40, 80));
         searchHeaderPanel.add(searchbox);
         searchHeaderPanel.add(searchButton);
 
@@ -51,7 +52,7 @@ public class CalendarPanel extends JPanel implements ActionListener {
 
         scrollList = new JScrollPane(scrollPaneContainer, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollList.setLayout(new ScrollPaneLayout());
-        scrollList.setPreferredSize(new Dimension(800, 500));
+        scrollList.setPreferredSize(new Dimension(800, 450));
         scrollList.getVerticalScrollBar().setUnitIncrement(10);
 
         westMargin2 = new JPanel();
@@ -95,13 +96,11 @@ public class CalendarPanel extends JPanel implements ActionListener {
         }
     }
 
-    //FIXME: update the updatelist method later when the list is acquired
     public void updateList() {
         HashMap<String, LinkedList<Event>> dataMap = Execution.Main.getPlannedDatesData();
         int hmSize = dataMap.size();
-        System.out.println(hmSize);
         plannedDatesList.removeAll();
-        plannedDatesList.setPreferredSize(new Dimension(800, dataMap.size()==0? 500 : 120*hmSize));
+        plannedDatesList.setPreferredSize(new Dimension(800, dataMap.size()==0? 450 : 120*hmSize));
         scrollPaneContainer.setPreferredSize(new Dimension(800, 120*hmSize));
         if (hmSize==0) {
             plannedDatesList.add(message);
@@ -139,23 +138,23 @@ public class CalendarPanel extends JPanel implements ActionListener {
     public static class PlannedDate extends JPanel {
         private JLabel dateLabel, numOfPlans;
         private JButton getDate;
-        //FIXME: give the constructor correct param
         public PlannedDate(String date, LinkedList<Event> plans) {
             this.setLayout(new GridBagLayout());
             this.setPreferredSize(new Dimension(800, 120));
             dateLabel = new JLabel(date.replace("#", ""));
-            dateLabel.setPreferredSize(new Dimension(200, 120));
-            numOfPlans = new JLabel(plans.size() + "plans");
-            numOfPlans.setPreferredSize(new Dimension(200, 120));
+            dateLabel.setPreferredSize(new Dimension(250, 120));
+            dateLabel.setFont(new Font("Georgia", Font.PLAIN, 24));
+            numOfPlans = new JLabel(plans.size() + " plans");
+            numOfPlans.setPreferredSize(new Dimension(250, 120));
+            numOfPlans.setFont(new Font("Georgia", Font.PLAIN, 24));
             getDate = new JButton("navigate");
-            getDate.setFont(new Font("Georigia", Font.PLAIN, 18));
+            getDate.setFont(new Font("Georgia", Font.PLAIN, 24));
             getDate.setBorderPainted(false);
             getDate.setOpaque(true);
-            getDate.setPreferredSize(new Dimension(200, 100));
+            getDate.setPreferredSize(new Dimension(140, 60));
             getDate.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //FIXME: pass the correct param
                     Execution.Main.getGui().showDate(plans);
                 }
             });

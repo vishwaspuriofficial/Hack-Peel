@@ -11,6 +11,7 @@ public class DatePanel extends JPanel {
 
     }
 
+    //TODO: this method
     public void setDate(LinkedList<Event> plans) {
 
     }
