@@ -99,7 +99,6 @@ public class CalendarPanel extends JPanel implements ActionListener {
     public void updateList() {
         HashMap<String, LinkedList<Event>> dataMap = Execution.Main.getPlannedDatesData();
         int hmSize = dataMap.size();
-        System.out.println(hmSize);
         plannedDatesList.removeAll();
         plannedDatesList.setPreferredSize(new Dimension(800, dataMap.size()==0? 500 : 120*hmSize));
         scrollPaneContainer.setPreferredSize(new Dimension(800, 120*hmSize));
