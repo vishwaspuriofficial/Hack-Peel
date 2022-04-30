@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         loadMainSave();
         gui = new MainFrame();
+
     }
 
     public static MainFrame getGui() {
@@ -34,8 +35,8 @@ public class Main {
 
 
         String line = br.readLine();
+        String currentDate = "";
         while (line!= null) {
-            String currentDate = "";
             if (line.charAt(0)=='#') {
                 plannedDatesData.put(line, new LinkedList<>());
                 currentDate = line;
@@ -47,6 +48,7 @@ public class Main {
             }
             line = br.readLine();
         }
+
     }
 
     public void loadRepeatedDays() throws IOException {
@@ -68,10 +70,14 @@ public class Main {
             }
         }
     }
-    public void saveEvent(Event event) throws IOException {
-        FileWriter file = new FileWriter(event.getPath(),true);
-        PrintWriter write = new PrintWriter(file);
+    public static void saveEvent(Event event) throws IOException {
 
+        //Deletes original content of file
+        PrintWriter pw = new PrintWriter(new FileOutputStream("src/main/java/Databases/mainsave.txt", false));
+
+        //Overwrites the content
+        FileWriter file = new FileWriter("src/main/java/Databases/mainsave.txt",true);
+        PrintWriter write = new PrintWriter(file);
         write.print("#"+event.getDate());
 
         String[] repeatDates = event.getRepeatDate().toArray(new String[0]);
@@ -80,17 +86,18 @@ public class Main {
         String[] linkedEvents = event.getLinkedEvents().toArray(new String[0]);
         String events = String.join(",", linkedEvents);
 
-        write.print(event.getTitle()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeat+"∂"+events+"∂"+event.getStressLevel());
+        write.print("\n"+event.getTitle()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeat+"∂"+events+"∂"+event.getStressLevel()+"\n");
 
         write.close();
     }
 
 
     public void saveRepeatedEvent(Event event) throws IOException {
-        FileWriter file = new FileWriter(event.getPath(),true);
+        FileWriter file = new FileWriter("src/main/java/Databases/mainsave.txt",true);
         PrintWriter write = new PrintWriter(file);
 
         write.print("#"+event.getTitle());
+
 
         String[] repeatDates = event.getRepeatDate().toArray(new String[0]);
         String repeat = String.join(",", repeatDates);
@@ -98,9 +105,10 @@ public class Main {
         String[] linkedEvents = event.getLinkedEvents().toArray(new String[0]);
         String events = String.join(",", linkedEvents);
 
-        write.print(event.getDate()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeat+"∂"+events+"∂"+event.getStressLevel());
+        write.print("\n"+event.getDate()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeat+"∂"+events+"∂"+event.getStressLevel()+"\n");
 
         write.close();
     }
+
 
 }
