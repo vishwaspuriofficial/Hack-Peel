@@ -16,6 +16,7 @@ public class Main {
         loadRepeatedDays();
         gui = new MainFrame();
         Event test = new Event("Gym","30/04/2022","10:00am","10:45am",new ArrayList<>(Arrays.asList("1","2")),new ArrayList<>(Arrays.asList("Shower")),4);
+        saveEvent(test);
         saveRepeatedEvent(test);
     }
 
