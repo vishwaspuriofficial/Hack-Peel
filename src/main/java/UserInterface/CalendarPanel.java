@@ -107,9 +107,8 @@ public class CalendarPanel extends JPanel implements ActionListener {
             plannedDatesList.add(message);
             plannedDatesList.setLayout(new FlowLayout(0, 25, 180));
         } else {
-            for (char needDateHere : "haha".toCharArray()) {
-                //Date current = needDateHere;
-                PlannedDate panelItem = new PlannedDate();
+            for (String date : dataMap.keySet()) {
+                PlannedDate panelItem = new PlannedDate(date, dataMap.get(date));
                 panelItem.colorTheme();
                 plannedDatesList.setLayout(new FlowLayout(0, 0, 0));
                 plannedDatesList.add(panelItem);
@@ -138,15 +137,15 @@ public class CalendarPanel extends JPanel implements ActionListener {
     }
 
     public static class PlannedDate extends JPanel {
-        private JLabel date, numOfPlans;
+        private JLabel dateLabel, numOfPlans;
         private JButton getDate;
         //FIXME: give the constructor correct param
-        public PlannedDate() {
+        public PlannedDate(String date, LinkedList<Event> plans) {
             this.setLayout(new GridBagLayout());
             this.setPreferredSize(new Dimension(800, 120));
-            date = new JLabel("mm/dd/yyyy");
-            date.setPreferredSize(new Dimension(200, 120));
-            numOfPlans = new JLabel(0 + "plans");
+            dateLabel = new JLabel(date.replace("#", ""));
+            dateLabel.setPreferredSize(new Dimension(200, 120));
+            numOfPlans = new JLabel(plans.size() + "plans");
             numOfPlans.setPreferredSize(new Dimension(200, 120));
             getDate = new JButton("navigate");
             getDate.setFont(new Font("Georigia", Font.PLAIN, 18));
@@ -157,10 +156,10 @@ public class CalendarPanel extends JPanel implements ActionListener {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     //FIXME: pass the correct param
-                    Execution.Main.getGui().showDate();
+                    Execution.Main.getGui().showDate(plans);
                 }
             });
-            this.add(date);
+            this.add(dateLabel);
             this.add(numOfPlans);
             this.add(getDate);
             this.colorTheme();
@@ -168,7 +167,7 @@ public class CalendarPanel extends JPanel implements ActionListener {
 
         public void colorTheme() {
             this.setBackground(dlistBackColor);
-            date.setForeground(dlabelForeColor);
+            dateLabel.setForeground(dlabelForeColor);
             numOfPlans.setForeground(dlabelForeColor);
             getDate.setForeground(dlabelForeColor);
             getDate.setBackground(dbuttonBackColor);

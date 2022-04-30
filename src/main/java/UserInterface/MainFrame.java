@@ -1,9 +1,12 @@
 package UserInterface;
 
+import Scripts.Event;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 
 public class MainFrame extends JFrame{
     private CardLayout cardLayout = new CardLayout();
@@ -40,8 +43,8 @@ public class MainFrame extends JFrame{
     }
 
     //FIXME: give the method correct param
-    public void showDate() {
-        datePanel.setDate();
+    public void showDate(LinkedList<Event> plans) {
+        datePanel.setDate(plans);
         this.changePanel("2");
     }
 
