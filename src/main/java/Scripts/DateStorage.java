@@ -181,12 +181,18 @@ public class DateStorage {
 
         if (solutionIndex != 3){
             for(int i = 0; i < solutionIndex; i++){
+                Event solEvent = (Event) _event.clone();
                 float newStartTime = maybeTimeSlots.get(i);
                 float newEndTime = 0;
                 if(newStartTime - (newStartTime-0.5f) == 0.5){
                     newStartTime -= 0.20;
                 }
                 newEndTime = newStartTime+0.30f;
+
+                solEvent.startTime = String.valueOf(newStartTime);
+                solEvent.endTime = String.valueOf(newEndTime);
+
+                possibleSolutions[solutionIndex].add(solEvent);
             }
         }
 
