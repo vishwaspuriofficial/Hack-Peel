@@ -12,7 +12,6 @@ import java.util.Scanner;
 
 
 public class Event {
-    String path = "../Databases/mainsave.txt";
     String title;
     String startTime;
     String endTime;
@@ -32,9 +31,6 @@ public class Event {
         stressLevel = _stressLevel;
     }
 
-    public String getPath() {
-        return path;
-    }
 
     public String getTitle() {
         return title;
