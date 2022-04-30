@@ -43,14 +43,14 @@ public class DateStorage {
 
 
 
-    public static void addEventToDate(String _date, LinkedList<Event> _event) throws ParseException {
+    public static void addEventToDate(LinkedList<Event> _event) throws ParseException {
         HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
-        plannedDatesData.put(_date, _event);
+        plannedDatesData.put(_event.get(0).getDate(), _event);
     }
 
-    public static void deleteEventAtDate(String date, String title){
+    public static void deleteEventAtDate(String date, LinkedList<Event> _event){
         HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
-        plannedDatesData.remove(date,title);
+        plannedDatesData.remove(date,_event);
     }
 
     public int getEventDay(LocalDate date){
