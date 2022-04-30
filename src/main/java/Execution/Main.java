@@ -40,8 +40,9 @@ public class Main {
             } else {
                 String[] attributes = line.split("∂");
                 //FIXME: ask shaya about the arraylist and linkedlist
-//                Arraylist<String> attr5 =
-                plannedDatesData.get(currentDate).add(new Event(attributes[0], line.replace("#", ""), attributes[1], attributes[2], new ArrayList<>(), new LinkedList<>(), Integer.parseInt(attributes[5])));
+                ArrayList<String> attr3 = new ArrayList<>(Arrays.asList(attributes[3].split(",")));
+                ArrayList<String> attr4 = new ArrayList<>(Arrays.asList(attributes[4].split(",")));
+                plannedDatesData.get(currentDate).add(new Event(attributes[0], line.replace("#", ""), attributes[1], attributes[2], attr3, attr4, Integer.parseInt(attributes[5])));
             }
             line = br.readLine();
         }
