@@ -4,6 +4,7 @@ import Scripts.Event;
 import UserInterface.MainFrame;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.io.*;
@@ -29,6 +30,7 @@ public class Main {
         File file = new File("src/main/java/Databases/mainsave.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
 
+
         String line = br.readLine();
         while (line!= null) {
             String currentDate = "";
@@ -41,19 +43,30 @@ public class Main {
 //                Arraylist<String> attr5 =
                 plannedDatesData.get(currentDate).add(new Event(attributes[0], line.replace("#", ""), attributes[1], attributes[2], new ArrayList<>(), new LinkedList<>(), Integer.parseInt(attributes[5])));
             }
+            line = br.readLine();
         }
     }
 
     public LinkedList<String> loadRepeatedDays() throws IOException {
-        LinkedList<String> dates = null;
-        String path = "../Databases/repeat.txt";
+        LinkedList<Event> dates = null;
+        String path = "src/main/java/Databases/repeat.txt";
         File file = new File(path);
         BufferedReader br = new BufferedReader(new FileReader(file));
 
-        int r = 0;
-        while ((r = br.read()) != -1) {
-            dates.add(br.readLine());
+        String line = br.readLine();
+        while (line!= null) {
+            String eventName = line.split("# ")[0];
+            if (line.charAt(0)=='#') {
+                String[] data = br.readLine().split("∂");
+                String[] repeat = data[3].split(",");
+                ArrayList<String> repeatedDays = new ArrayList<>(Arrays.asList(repeat));
+                String[] link = data[4].split(",");
+                ArrayList<String> linkedEvents = new ArrayList<>(Arrays.asList(link));
+                Event event = new Event(eventName,data[0],data[1],data[2],repeatedDays,linkedEvents,Integer.parseInt(data[5]));
+            }
+
+
         }
-        return dates;
+        return null;
     }
 }
