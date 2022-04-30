@@ -19,7 +19,7 @@ public class MainFrame extends JFrame{
     private CalendarPanel calendarPanel;
     private DatePanel datePanel;
 
-    public MainFrame() throws ParseException {
+    public MainFrame() throws ParseException, CloneNotSupportedException {
         this.setSize(new Dimension(1200, 800));
         this.setResizable(false);
         this.setTitle("Day Planner");
@@ -41,7 +41,7 @@ public class MainFrame extends JFrame{
 
         this.add(content);
         this.setVisible(true);
-//        test(); TEST CASE
+        test(); //TEST CASE
     }
 
     public void changePanel(String target) {
@@ -71,6 +71,17 @@ public class MainFrame extends JFrame{
 //        System.out.println(Main.getPlannedDatesData());
 //    }
 
+    public void test() throws ParseException, CloneNotSupportedException {
+        LinkedList<Event> event= new LinkedList<Event>();
+        Event test = new Event("GYY","30/05/2022","10:00","10:45",new ArrayList<>(Arrays.asList("1","2")),new ArrayList<>(Arrays.asList("Shower")),4);
+        event.add(test);
+        DateStorage.addEventToDate(event);
+        LinkedList<Event>[] solutions = DateStorage.getSuggestions("30/05/2022",test);
+        for (Event e : solutions[0]) {
+            System.out.println(e.getTitle()+" "+e.getStartTime()+" "+e.getEndTime());
+        }
+
+    }
 
 
 }
