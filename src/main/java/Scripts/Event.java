@@ -32,15 +32,39 @@ public class Event {
         stressLevel = _stressLevel;
     }
 
-    public void saveToFile() throws IOException {
-//
-        FileWriter file = new FileWriter(path,true);
-        PrintWriter write = new PrintWriter(file);
-
-
-//        write.print("#day("+date+")\n");
-//
-//        write.close();
+    public String getPath() {
+        return path;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public ArrayList<String> getRepeatDate() {
+        return repeatDate;
+    }
+
+    public ArrayList<String> getLinkedEvents() {
+        return linkedEvents;
+    }
+
+    public int getStressLevel() {
+        return stressLevel;
+    }
+
+    public int getTimeInterval() {
+        return timeInterval;
+    }
 }
