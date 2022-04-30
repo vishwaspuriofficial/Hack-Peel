@@ -7,12 +7,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.IsoFields;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
+import java.util.*;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Locale;
 
 
 public class DateStorage {
@@ -109,14 +106,22 @@ public class DateStorage {
     }
 
     public LinkedList<Event>[] getSuggestions(String _date, Event _event){
-        getMerge(_date);
+        LinkedList<Event> mainEvents = getMerge(_date);
         //Algorithm part
 
-        ArrayList<Float> x = new ArrayList<>();
-        //for(Event event : mainEvents){
+        ArrayList<Float> startTimeLst = new ArrayList<>();
+        for(Event event : mainEvents){
+            String[] split = event.startTime.split(":");
+            float time = Float.parseFloat(split[0]) + Float.parseFloat(".".join(split[1]));
+            startTimeLst.add(time);
+        }
 
-          //  x.add()
-        //}
+
+        Collections.sort(startTimeLst);
+
+        
+
+
 
         return null;
     }
