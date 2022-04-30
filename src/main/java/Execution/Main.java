@@ -48,7 +48,7 @@ public class Main {
         }
     }
 
-    public LinkedList<String> loadRepeatedDays() throws IOException {
+    public LinkedList<Event> loadRepeatedDays() throws IOException {
         LinkedList<Event> dates = null;
         String path = "src/main/java/Databases/repeat.txt";
         File file = new File(path);
@@ -64,10 +64,9 @@ public class Main {
                 String[] link = data[4].split(",");
                 ArrayList<String> linkedEvents = new ArrayList<>(Arrays.asList(link));
                 Event event = new Event(eventName,data[0],data[1],data[2],repeatedDays,linkedEvents,Integer.parseInt(data[5]));
+                dates.add(event);
             }
-
-
         }
-        return null;
+        return dates;
     }
 }
