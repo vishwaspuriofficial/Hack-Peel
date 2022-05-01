@@ -178,7 +178,12 @@ public class DateStorage {
                 s1=null;
                 break;
             }
-            s1.set(s1.indexOf(result),result); //This is duplication, so it should rather change the result value of s1 to the new starttime and endtime
+            if(s1.contains(_event)){
+                s1.set(s1.indexOf(result),result);
+            }
+            else{
+                s1.add(_event);
+            }
         }
 
         //Solution 2: Easy To Hard
@@ -190,7 +195,12 @@ public class DateStorage {
                 s2=null;
                 break;
             }
-            s2.set(s2.indexOf(result),result);
+            if(s2.contains(_event)){
+                s2.set(s2.indexOf(result),result);
+            }
+            else{
+                s2.add(_event);
+            }
         }
 
         //Solution 3: Hard To Easy
@@ -202,7 +212,12 @@ public class DateStorage {
                 s3=null;
                 break;
             }
-            s3.set(s3.indexOf(result),result);
+            if(s3.contains(_event)){
+                s3.set(s3.indexOf(result),result);
+            }
+            else{
+                s3.add(_event);
+            }
         }
 //        System.out.println(s1);
         return possibleSolutions;
@@ -241,31 +256,29 @@ public class DateStorage {
             int s = availableTimeSlots.indexOf(ct);
             //Index of Starting time
             int e = availableTimeSlots.indexOf(ct + (ti * 0.5f));
+            if(s == -1 || e == -1){
+                return null;
+            }
+
             //Index of Ending time
 
             int sh = (int) s ;
             //Starting Hour
-            float sm = sh - availableTimeSlots.get(s);
+            float sm = Math.abs(sh - availableTimeSlots.get(s));
             //Starting Min
 
             //make exact time sh:sm
-            sm = setDecimal(sm);
-            if (sm == 0) {
-                sh += 1;
-            }
+            int smt = setDecimal(sm);
 
             //make exact time eh:em
             int eh = (int) e;
-            float em = e - eh;
+            float em = Math.abs(eh - availableTimeSlots.get(e));
 
-            em = setDecimal(em);
-            if (em == 0) {
-                eh += 1;
-            }
+            int emt = setDecimal(em);
 
             //String times
-            String startTime = String.valueOf(sh) + ":" + String.valueOf(sm);
-            String endTime = String.valueOf(eh) + ":" + String.valueOf(em);
+            String startTime = String.valueOf(sh) + ":" + String.valueOf(smt);
+            String endTime = String.valueOf(eh) + ":" + String.valueOf(emt);
             //COnverting to datesformat
             DateFormat df = new SimpleDateFormat("hh:mm");
             Date ST = df.parse(startTime);
