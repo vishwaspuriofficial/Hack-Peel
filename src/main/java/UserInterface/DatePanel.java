@@ -631,6 +631,10 @@ public class DatePanel extends JPanel implements ActionListener{
         } else {
             selected = false;
             selectSolution.setText("Select solution");
+            selectSolution.setForeground(dlabelForeColor);
+            selectSolution.setBackground(dbuttonBackColor);
+            selectSolution.setBorderPainted(false);
+            suggestionContainer.setVisible(true);
         }
         updateVertList(plans);
         updateTimeLine(plans);
