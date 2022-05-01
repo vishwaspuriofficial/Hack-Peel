@@ -615,19 +615,21 @@ public class DatePanel extends JPanel implements ActionListener{
         } else if (e.getSource()==cancel && menuUp) {
             menuPanel.setVisible(menuUp = false);
         } else if (e.getSource()==confirm) {
-            //TODO: construct event object here
+            //TODO:
+            Event newEvent = new Event(inEventTitle.getText(), date, )
         } else if (e.getSource()==staticEvent && menuUp) {
             System.out.println("static");
             inEventStart.setText("hh:mm (24 hours time)");
+            addEventEnd.setText("Event End Time:");
             inEventEnd.setText("hh:mm (24 hours time)");
             inEventStart.setEnabled(true);
             inEventEnd.setEnabled(true);
         } else if (e.getSource()==dynamicEvent && menuUp) {
             System.out.println("dynamic");
             inEventStart.setText("Disabled due to dynamic event type");
-            inEventEnd.setText("Disabled due to dynamic event type");
+            addEventEnd.setText("Length of event:");
+            inEventEnd.setText("enter the length of event in hh:mm format");
             inEventStart.setEnabled(false);
-            inEventEnd.setEnabled(false);
         }
 
     }

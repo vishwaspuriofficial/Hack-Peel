@@ -42,7 +42,7 @@ public class MainFrame extends JFrame{
 
         this.add(content);
         this.setVisible(true);
-        test(); //TEST CASE
+//        test(); //TEST CASE
     }
 
     public void changePanel(String target) {
@@ -74,19 +74,19 @@ public class MainFrame extends JFrame{
 //        System.out.println(Main.getPlannedDatesData());
 //    }
 
-    public void test() throws ParseException, CloneNotSupportedException {
-        LinkedList<Event> event= new LinkedList<Event>();
-        Event _test = new Event("EyLmao","30/05/2022","00:00",":30",new ArrayList<>(Arrays.asList("1","2")),4);
-        Event testToAdd = new Event("GYY","30/05/2022","10:00","10:30",new ArrayList<>(Arrays.asList("1","2")),4);
-        event.add(_test);
-        DateStorage.addEventToDate(event);
-        LinkedList<Event>[] solutions = DateStorage.getSuggestions("30/05/2022",testToAdd);
-        System.out.println("I made it bruv");
-        for (Event e : solutions[0]) {
-           System.out.println(e.getTitle()+" "+e.getStartTime()+" "+e.getEndTime());
-        }
-
-    }
+//    public void test() throws ParseException, CloneNotSupportedException {
+//        LinkedList<Event> event= new LinkedList<Event>();
+//        Event _test = new Event("EyLmao","30/05/2022","00:00",":30",new ArrayList<>(Arrays.asList("1","2")),4);
+//        Event testToAdd = new Event("GYY","30/05/2022","10:00","10:30",new ArrayList<>(Arrays.asList("1","2")),4);
+//        event.add(_test);
+//        DateStorage.addEventToDate(event);
+//        LinkedList<Event>[] solutions = DateStorage.getSuggestions("30/05/2022",testToAdd);
+//        System.out.println("I made it bruv");
+//        for (Event e : solutions[0]) {
+//           System.out.println(e.getTitle()+" "+e.getStartTime()+" "+e.getEndTime());
+//        }
+//
+//    }
 
 
 }
