@@ -247,9 +247,9 @@ public class DatePanel extends JPanel implements ActionListener{
         eventType.add(dynamicEvent);
         eventType.setSelected(staticEvent.getModel(), true);
 
-        addEventStart = new JLabel("Event Start Time:");
+        addEventStart = new JLabel("Event Start Time (hh:mm):");
         addEventStart.setFont(new Font("Georgia", Font.PLAIN, 24));
-        addEventStart.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        addEventStart.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 450, this.heightV);
         heightC++; marginC++;
 
         inEventStart = new JTextField();
@@ -258,9 +258,9 @@ public class DatePanel extends JPanel implements ActionListener{
         inEventStart.setText("hh:mm (24 hours time)");
         marginC++; heightC++; sectionC++;
 
-        addEventEnd = new JLabel("Event End Time:");
+        addEventEnd = new JLabel("Event End Time (hh:mm):");
         addEventEnd.setFont(new Font("Georgia", Font.PLAIN, 24));
-        addEventEnd.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        addEventEnd.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 450, this.heightV);
         heightC++; marginC++;
 
         inEventEnd = new JTextField();
@@ -654,9 +654,9 @@ public class DatePanel extends JPanel implements ActionListener{
             if (dyn) {
                 inEventStart.setText("00:00");
             }
+
             Event newEvent = new Event(inEventTitle.getText(), date, inEventStart.getText(), inEventEnd.getText(), repeatList, level, dyn);
-            System.out.println(inEventStart.getText());
-            System.out.println(inEventEnd.getText());
+            if (repeatList.isEmpty()) {Execution.Main.getRepeatingEvents().add(newEvent);}
             menuPanel.setVisible(menuUp = false);
             try {
                 Execution.Main.getGui().setSolutions(Scripts.DateStorage.getSuggestions(date, newEvent));

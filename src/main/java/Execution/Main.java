@@ -18,8 +18,6 @@ public class Main {
         loadMainSave();
         loadRepeatedDays();
         gui = new MainFrame();
-//        saveEvent();
-//        saveRepeatedEvent();
     }
 
     public static MainFrame getGui() {
@@ -33,6 +31,7 @@ public class Main {
     public static LinkedList<Event> getRepeatingEvents() {
         return repeatingEvents;
     }
+
 
     public static void loadMainSave() throws IOException {
         File file = new File("src/main/java/Databases/mainsave.txt");
@@ -54,6 +53,7 @@ public class Main {
 
     }
 
+
     public static void loadRepeatedDays() throws IOException {
         String path = "src/main/java/Databases/repeat.txt";
         File file = new File(path);
@@ -62,7 +62,7 @@ public class Main {
         String line = br.readLine();
         while (line!= null) {
             if (line.charAt(0)=='#') {
-                String eventName = line.split("# ")[0];
+                String eventName = line.replace("#", "");
                 String[] data = br.readLine().split("∂");
                 String[] repeat = data[3].split(",");
                 ArrayList<String> repeatedDays = new ArrayList<>(Arrays.asList(repeat));
@@ -79,60 +79,30 @@ public class Main {
         }
         br.close();
     }
-    public static void saveEvent() throws IOException {
-        //Deletes original content of file
-        ArrayList <String> toSave = new ArrayList<>();
 
+
+    public static void saveEvent() throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter("src/main/java/Databases/mainsave.txt"));
         for (String key : plannedDatesData.keySet()) {
-            toSave.add("#" + key);
+            bw.write("#"+key+"\n");
             for (Event event : plannedDatesData.get(key)) {
-                String[] repeatDates = event.getRepeatDate().toArray(new String[0]);
-                String repeat = String.join(",", repeatDates);
-                toSave.add(toSave.size()-1,"\n" + event.getTitle() + "∂" + event.getStartTime() + "∂" + event.getEndTime() + "∂" + repeat + "∂" + event.getStressLevel() + "∂" + event.getDynamic() + "\n");
+                String repeatPattern = String.join(",", event.getRepeatDate().toArray(new String[0]));
+                String jointData = event.getTitle()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeatPattern+"∂"+event.getStressLevel()+"∂"+event.getDynamic();
+                bw.write(jointData +"\n");
             }
         }
-
-                PrintWriter pw = new PrintWriter(new FileOutputStream("src/main/java/Databases/mainsave.txt", false));
-//                //Overwrites the content
-                FileWriter file = new FileWriter("src/main/java/Databases/mainsave.txt", true);
-                PrintWriter write = new PrintWriter(file);
-                for (String e : toSave) {
-                    write.print(e);
-
-                }
-                write.close();
-//
-//
-//                write.print("\n" + event.getTitle() + "∂" + event.getStartTime() + "∂" + event.getEndTime() + "∂" + repeat + "∂" + event.getStressLevel() + "∂" + event.getDynamic() + "\n");
-//
-//                write.close();
+        bw.close();
     }
 
 
     public static void saveRepeatedEvent() throws IOException {
-
+        BufferedWriter bw = new BufferedWriter(new FileWriter("src/main/java/Databases/repeat.txt"));
         for (Event event : repeatingEvents) {
-
-            //Deletes original content of file
-            PrintWriter pw = new PrintWriter(new FileOutputStream("src/main/java/Databases/repeat.txt", false));
-
-            //Overwrites the content
-            FileWriter file = new FileWriter("src/main/java/Databases/repeat.txt", true);
-            PrintWriter write = new PrintWriter(file);
-
-            write.print("#" + event.getTitle());
-
-
-            String[] repeatDates = event.getRepeatDate().toArray(new String[0]);
-            String repeat = String.join(",", repeatDates);
-
-            write.print("\n" + event.getDate() + "∂" + event.getStartTime() + "∂" + event.getEndTime() + "∂" + repeat + "∂" + event.getStressLevel() + "∂" + event.getDynamic() + "\n");
-
-            write.close();
+            bw.write("#"+event.getTitle()+"\n");
+            String repeatPattern = String.join(",", event.getRepeatDate().toArray(new String[0]));
+            String jointData = event.getDate()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeatPattern+"∂"+event.getStressLevel()+"∂"+event.getDynamic();
+            bw.write(jointData);
         }
+        bw.close();
     }
-
-
-
-
 }

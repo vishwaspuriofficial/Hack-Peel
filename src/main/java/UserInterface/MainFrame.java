@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.lang.reflect.Executable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,16 +30,17 @@ public class MainFrame extends JFrame{
         this.setResizable(false);
         this.setTitle("Optistrads");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        this.addWindowListener(new WindowAdapter() {
-//            public void windowClosing(WindowEvent e) {
-//                System.out.println("closing");
-//                try {
-//                    //TODO: save file method here
-//                } catch (IOException ex) {
-//                    ex.printStackTrace();
-//                }
-//            }
-//        });
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                try {
+                    //TODO: save file method here
+                    Execution.Main.saveEvent();
+                    Execution.Main.saveRepeatedEvent();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
         this.setVisible(true);
 
         calendarPanel = new CalendarPanel();
