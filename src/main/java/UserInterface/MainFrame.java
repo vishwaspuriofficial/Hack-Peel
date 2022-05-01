@@ -75,9 +75,11 @@ public class MainFrame extends JFrame{
 
     public void test() throws ParseException, CloneNotSupportedException {
         LinkedList<Event> event= new LinkedList<Event>();
-        Event _test = new Event("EyLmao","30/05/2022","00:00",":30",new ArrayList<>(Arrays.asList("1","2")),4);
-        Event testToAdd = new Event("GYY","30/05/2022","10:00","10:30",new ArrayList<>(Arrays.asList("1","2")),4);
+        Event _test = new Event("EyLmao","30/05/2022","00:00","01:00",new ArrayList<>(Arrays.asList("1","2")),4,false);
+        Event testToAdd = new Event("GYY","30/05/2022","10:00","10:30",new ArrayList<>(Arrays.asList("1","2")),4,true);
+        Event _test2 = new Event("test2","30/05/2022","01:00","01:30",new ArrayList<>(Arrays.asList("1","2")),4,true);
         event.add(_test);
+        event.add(_test2);
         DateStorage.addEventToDate(event);
         LinkedList<Event>[] solutions = DateStorage.getSuggestions("30/05/2022",testToAdd);
         System.out.println("I made it bruv");
