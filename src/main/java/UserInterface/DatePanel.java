@@ -757,6 +757,7 @@ public class DatePanel extends JPanel implements ActionListener{
                 selectSolution.setBorderPainted(true);
                 selectSolution.setBorder(BorderFactory.createEtchedBorder(0));
                 suggestionContainer.setVisible(false);
+                Execution.Main.getPlannedDatesData().put(this.date, this.plans);
                 Execution.Main.getPlannedDatesData().replace(this.date, this.plans);
             }
         } else if (e.getSource()==back && !menuUp) {
