@@ -18,7 +18,7 @@ public class Main {
         loadMainSave();
         loadRepeatedDays();
         gui = new MainFrame();
-        MainFrame.test();
+//        MainFrame.test();
     }
 
     public static MainFrame getGui() {

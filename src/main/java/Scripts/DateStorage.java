@@ -2,6 +2,7 @@ package Scripts;
 
 import Execution.Main;
 
+import java.lang.reflect.Executable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,9 +48,15 @@ public class DateStorage {
         return getSuggestions(_event.get(0).getDate(), _event.get(0));
     }
 
-    public static void deleteEventAtDate(String date, LinkedList<Event> _event) {
-        HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
-        plannedDatesData.remove(date, _event);
+    public static void deleteEventAtDate(String date, LinkedList<Event> _event, Event target, String id) {
+        _event.remove(target);
+        Main.getPlannedDatesData().replace(date, _event);
+        switch (id) {
+            case "2" -> Main.getGui().getDatePanel().setDate(date, _event, false);
+            case "3" -> Main.getGui().getSuggestion1().setDate(date, _event, false);
+            case "4" -> Main.getGui().getSuggestion2().setDate(date, _event, false);
+            case "5" -> Main.getGui().getSuggestion3().setDate(date, _event, false);
+        }
     }
 
     public static int getEventDay(LocalDate date) {

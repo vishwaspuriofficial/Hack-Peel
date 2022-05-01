@@ -5,19 +5,14 @@ import Scripts.Event;
 import static Assets.Pallete.*;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Executable;
-import java.security.DigestException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.*;
 
 public class DatePanel extends JPanel implements ActionListener{
+    private String id;
     private String date;
     private LinkedList<Event> plans;
 
@@ -29,6 +24,8 @@ public class DatePanel extends JPanel implements ActionListener{
     private JLabel title, message, suggestionNumber;
     private JScrollPane timeLineScrollPane, eventListScrollPane;
     private JButton back, addEvent, selectSolution, nextSuggestion, previousSuggestion;
+    private JSlider timelineScale;
+    private Hashtable<Integer, JLabel> customLabel = new Hashtable<>();
     private boolean selected, menuUp = false;
 
     private JPanel menuPanel, solidMenu, translucentMenu, menuContentPanel;
@@ -43,7 +40,8 @@ public class DatePanel extends JPanel implements ActionListener{
 
     private Color[] colorList;
 
-    public DatePanel() {
+    public DatePanel(String id) {
+        this.id = id;
         this.setLayout(null);
 
         back = new JButton("Back to Calendar");
@@ -122,11 +120,99 @@ public class DatePanel extends JPanel implements ActionListener{
         southMargin1 = new JPanel();
         southMargin1.setPreferredSize(new Dimension(0, 70));
 
+        JLabel hourZero = new JLabel("00:00"),
+                hourOne = new JLabel("01:00"),
+                hourTwo = new JLabel("02:00"),
+                hourThree = new JLabel("03:00"),
+                hourFour = new JLabel("04:00"),
+                hourFive = new JLabel("05:00"),
+                hourSix = new JLabel("06:00"),
+                hourSeven = new JLabel("07:00"),
+                hourEight = new JLabel("08:00"),
+                hourNine = new JLabel("09:00"),
+                hourTen = new JLabel("10:00"),
+                hourEle = new JLabel("11:00"),
+                hourTwel = new JLabel("12:00"),
+                hourThir = new JLabel("13:00"),
+                hourFort = new JLabel("14:00"),
+                hourFif = new JLabel("15:00"),
+                hourSixt = new JLabel("16:00"),
+                hourSevent = new JLabel("17:00"),
+                hourEightt = new JLabel("18:00"),
+                hourNinet = new JLabel("19:00"),
+                hourTwen = new JLabel("20:00"),
+                hourT1 = new JLabel("21:00"),
+                hourT2 = new JLabel("22:00"),
+                hourT3 = new JLabel("23:00"),
+                hourT4 = new JLabel("24:00");
+
+        hourZero.setForeground(dlabelForeColor);
+        hourOne.setForeground(dlabelForeColor);
+        hourTwo.setForeground(dlabelForeColor);
+        hourThree.setForeground(dlabelForeColor);
+        hourFour.setForeground(dlabelForeColor);
+        hourFive.setForeground(dlabelForeColor);
+        hourSix.setForeground(dlabelForeColor);
+        hourSeven.setForeground(dlabelForeColor);
+        hourEight.setForeground(dlabelForeColor);
+        hourNine.setForeground(dlabelForeColor);
+        hourTen.setForeground(dlabelForeColor);
+        hourEle.setForeground(dlabelForeColor);
+        hourTwel.setForeground(dlabelForeColor);
+        hourThir.setForeground(dlabelForeColor);
+        hourFort.setForeground(dlabelForeColor);
+        hourFif.setForeground(dlabelForeColor);
+        hourSixt.setForeground(dlabelForeColor);
+        hourSevent.setForeground(dlabelForeColor);
+        hourEightt.setForeground(dlabelForeColor);
+        hourNinet.setForeground(dlabelForeColor);
+        hourTwen.setForeground(dlabelForeColor);
+        hourT1.setForeground(dlabelForeColor);
+        hourT2.setForeground(dlabelForeColor);
+        hourT3.setForeground(dlabelForeColor);
+        hourT4.setForeground(dlabelForeColor);
+
+        customLabel.put(0, hourZero);
+        customLabel.put(2, hourOne);
+        customLabel.put(4, hourTwo);
+        customLabel.put(6, hourThree);
+        customLabel.put(8, hourFour);
+        customLabel.put(10, hourFive);
+        customLabel.put(12, hourSix);
+        customLabel.put(14, hourSeven);
+        customLabel.put(16, hourEight);
+        customLabel.put(18, hourNine);
+        customLabel.put(20, hourTen);
+        customLabel.put(22, hourEle);
+        customLabel.put(24, hourTwel);
+        customLabel.put(26, hourThir);
+        customLabel.put(28, hourFort);
+        customLabel.put(30, hourFif);
+        customLabel.put(32, hourSixt);
+        customLabel.put(34, hourSevent);
+        customLabel.put(36, hourEightt);
+        customLabel.put(38, hourNinet);
+        customLabel.put(40, hourTwen);
+        customLabel.put(42, hourT1);
+        customLabel.put(44, hourT2);
+        customLabel.put(46, hourT3);
+        customLabel.put(48, hourT4);
+
+        timelineScale = new JSlider(0, 48, 48);
+        timelineScale.setBounds(20, 100, 1920, 50);
+        timelineScale.setMajorTickSpacing(2);
+        timelineScale.setMinorTickSpacing(1);
+        timelineScale.setPaintLabels(true);
+        timelineScale.setPaintTicks(true);
+        timelineScale.setLabelTable(customLabel);
+
         timeLineContainer = new JPanel();
+        timeLineContainer.setPreferredSize(new Dimension(1960, 180));
+        timeLineContainer.setLayout(null);
 
         timeLineScrollPane = new JScrollPane(timeLineContainer, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         timeLineScrollPane.setPreferredSize(new Dimension(1100, 180));
-        timeLineScrollPane.getVerticalScrollBar().setUnitIncrement(10);
+        timeLineScrollPane.getHorizontalScrollBar().setUnitIncrement(10);
 
         message = new JLabel("No events are planned yet", SwingConstants.CENTER);
         message.setFont(new Font("Georgia", Font.BOLD, 30));
@@ -421,7 +507,6 @@ public class DatePanel extends JPanel implements ActionListener{
 
         mainLayeredPane = new JLayeredPane();
         mainLayeredPane.setBounds(0, 0, 1200, 800);
-        //TODO: do the menu later
         mainLayeredPane.add(menuPanel, Integer.valueOf(2));
         mainLayeredPane.add(mainContentPanel, Integer.valueOf(1));
 
@@ -432,8 +517,26 @@ public class DatePanel extends JPanel implements ActionListener{
     }
 
     //
-    public void updateTimeLine() {
-
+    public void updateTimeLine(LinkedList<Event> events) {
+        timeLineContainer.removeAll();
+        timeLineContainer.add(timelineScale);
+        int index = 0;
+        for (Event e : events) {
+            JLabel current = new JLabel(e.getTitle(), SwingConstants.CENTER);
+            current.setForeground(dbuttonBackColor);
+            current.setFont(new Font("Georgia", Font.PLAIN, 14));
+            current.setBackground(this.colorList[index]);
+            current.setOpaque(true);
+            String[] start = e.getStartTime().split(":");
+            int startInMinutes = Integer.parseInt(start[0])*60+Integer.parseInt(start[1]);
+            String[] end = e.getEndTime().split(":");
+            int endInMinutes = Integer.parseInt(end[0])*60+Integer.parseInt(end[1]);
+            current.setBounds(43+startInMinutes/30*39, 45, Math.abs(endInMinutes-startInMinutes)/30*39,50);
+            timeLineContainer.add(current);
+            index++;
+        }
+        timeLineContainer.repaint();
+        timeLineContainer.revalidate();
     }
 
     public void updateVertList(LinkedList<Event> events) {
@@ -446,31 +549,33 @@ public class DatePanel extends JPanel implements ActionListener{
             eventList.setLayout(new FlowLayout(0, 150, 140));
         } else {
             for (Event e : events) {
-                //TODO: use random color generator later
-                EventListItem eventListItem = new EventListItem(e.getTitle(), e.getStartTime(), e.getEndTime(), this.colorList[index]);
+                EventListItem eventListItem = new EventListItem(e, this.colorList[index], this.id);
                 eventListItem.colorTheme();
                 eventList.setLayout(new FlowLayout(0, 0, 0));
                 eventList.add(eventListItem);
                 index++;
             }
         }
-
-
-
+        eventList.repaint();
+        eventList.revalidate();
     }
 
-    public static class EventListItem extends JPanel {
+    public static class EventListItem extends JPanel implements ActionListener {
+        private String parentID;
         private JLabel eventName, time;
         private JButton remove;
         private Color color;
-        public EventListItem(String eventName, String startTime, String endTime, Color color) {
+        private Event thisEvent;
+        public EventListItem(Event event, Color color, String parentID) {
+            this.parentID = parentID;
+            this.thisEvent = event;
             this.setLayout(new GridBagLayout());
             this.setPreferredSize(new Dimension(700, 80));
-            this.eventName = new JLabel(eventName, SwingConstants.CENTER);
+            this.eventName = new JLabel(event.getTitle(), SwingConstants.CENTER);
             this.eventName.setPreferredSize(new Dimension(150, 80));
             this.eventName.setFont(new Font("Georgia", Font.BOLD, 24));
             this.color = color;
-            this.time = new JLabel(startTime+" - "+endTime, SwingConstants.CENTER);
+            this.time = new JLabel(event.getStartTime()+" - "+event.getEndTime(), SwingConstants.CENTER);
             this.time.setPreferredSize(new Dimension(430, 80));
             this.time.setFont(new Font("Georgia", Font.PLAIN, 24));
             this.remove = new JButton("Remove");
@@ -478,15 +583,7 @@ public class DatePanel extends JPanel implements ActionListener{
             this.remove.setFont(new Font("Georgia", Font.PLAIN, 20));
             this.remove.setBorderPainted(false);
             this.remove.setOpaque(true);
-            this.remove.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (!Main.getGui().getDatePanel().menuUp) {
-                        //TODO: do something here when the method is set up
-                    }
-
-                }
-            });
+            this.remove.addActionListener(this);
             this.add(this.eventName);
             this.add(time);
             this.add(remove);
@@ -500,9 +597,23 @@ public class DatePanel extends JPanel implements ActionListener{
             remove.setForeground(dlabelForeColor);
             remove.setBackground(dbuttonBackColor);
         }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource()==remove && !Main.getGui().getDatePanel().menuUp) {
+                if (this.parentID.equals("2")) {
+                    Scripts.DateStorage.deleteEventAtDate(Execution.Main.getGui().getDatePanel().getDate(), Execution.Main.getGui().getDatePanel().getPlans(), this.thisEvent, this.parentID);
+                } else if (this.parentID.equals("3")) {
+                    Scripts.DateStorage.deleteEventAtDate(Execution.Main.getGui().getSuggestion1().getDate(), Execution.Main.getGui().getSuggestion1().getPlans(), this.thisEvent, this.parentID);
+                } else if (this.parentID.equals("4")) {
+                    Scripts.DateStorage.deleteEventAtDate(Execution.Main.getGui().getSuggestion2().getDate(), Execution.Main.getGui().getSuggestion2().getPlans(), this.thisEvent, this.parentID);
+                } else if (this.parentID.equals("5")) {
+                    Scripts.DateStorage.deleteEventAtDate(Execution.Main.getGui().getSuggestion3().getDate(), Execution.Main.getGui().getSuggestion3().getPlans(), this.thisEvent, this.parentID);
+                }
+            }
+        }
     }
 
-    //TODO: this method is not done, need to add timeline update here
     public void setDate(String date, LinkedList<Event> plans, boolean isSetSolution) {
         title.setText("     " + date.replace("#", ""));
         this.plans = plans;
@@ -522,6 +633,7 @@ public class DatePanel extends JPanel implements ActionListener{
             selectSolution.setText("Select solution");
         }
         updateVertList(plans);
+        updateTimeLine(plans);
     }
 
     public void generateColor() {
@@ -557,6 +669,8 @@ public class DatePanel extends JPanel implements ActionListener{
         eastMargin1.setBackground(dmainBackColor);
         southMargin1.setBackground(dmainBackColor);
         centerContainer.setBackground(dmainBackColor);
+        timelineScale.setForeground(dlabelForeColor);
+        timelineScale.setBackground(dlistBackColor);
         timeLineContainer.setBackground(dlistBackColor);
         eastButtonContainer.setBackground(dmainBackColor);
         addEvent.setBackground(dnavButtonBackColor);
@@ -630,7 +744,6 @@ public class DatePanel extends JPanel implements ActionListener{
         menuContentPanel.setBackground(new Color(21, 20, 20));
     }
 
-//  TODO: finish the action listener alex
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==addEvent && !menuUp) {
@@ -719,5 +832,13 @@ public class DatePanel extends JPanel implements ActionListener{
 
     public void setSuggestionNumber(String text) {
         this.suggestionNumber.setText("suggestion " + text);
+    }
+
+    public LinkedList<Event> getPlans() {
+        return plans;
+    }
+
+    public String getDate() {
+        return date;
     }
 }

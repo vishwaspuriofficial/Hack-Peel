@@ -6,12 +6,9 @@ import Scripts.Event;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.lang.reflect.Executable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +30,6 @@ public class MainFrame extends JFrame{
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 try {
-                    //TODO: save file method here
                     Execution.Main.saveEvent();
                     Execution.Main.saveRepeatedEvent();
                 } catch (IOException ex) {
@@ -44,10 +40,10 @@ public class MainFrame extends JFrame{
         this.setVisible(true);
 
         calendarPanel = new CalendarPanel();
-        datePanel = new DatePanel();
-        suggestion1 = new DatePanel();
-        suggestion2 = new DatePanel();
-        suggestion3 = new DatePanel();
+        datePanel = new DatePanel("2");
+        suggestion1 = new DatePanel("3");
+        suggestion2 = new DatePanel("4");
+        suggestion3 = new DatePanel("5");
 
         content = new JPanel();
         content.setPreferredSize(new Dimension(700, 600));
@@ -82,25 +78,25 @@ public class MainFrame extends JFrame{
         return datePanel;
     }
     //Test Case
-    public static void test() throws ParseException, CloneNotSupportedException {
-        LinkedList<Event> event= new LinkedList<Event>();
-        Event _test = new Event("EyLmao","30/05/2022","00:00","00:30",new ArrayList<>(Arrays.asList("1","2")),4, false);
-        Event _test2 = new Event("GYY","30/05/2022","00:30","01:00",new ArrayList<>(Arrays.asList("1","2")),4,true);
-        Event _test3 = new Event("ABruv","30/05/2022","01:30","02:00",new ArrayList<>(Arrays.asList("1","2")),4,true);
-        Event testToAdd = new Event("lool","30/05/2022","5:00","5:30",new ArrayList<>(Arrays.asList("1","2")),10,true);
-
-        event.add(_test);
-        event.add(_test2);
-        event.add(_test3);
-
-        DateStorage.addEventToDate(event);
-        LinkedList<Event>[] solutions = DateStorage.getSuggestions("30/05/2022",testToAdd);
-//        System.out.println("I made it bruv");
-        for (Event e : solutions[0]) {
-//            System.out.println(e.getTitle()+" "+e.getStartTime()+" "+e.getEndTime());
-        }
-    }
+//    public static void test() throws ParseException, CloneNotSupportedException {
+//        LinkedList<Event> event= new LinkedList<Event>();
+//        Event _test = new Event("EyLmao","30/05/2022","00:00","00:30",new ArrayList<>(Arrays.asList("1","2")),4, false);
+//        Event _test2 = new Event("GYY","30/05/2022","00:30","01:00",new ArrayList<>(Arrays.asList("1","2")),4,true);
+//        Event _test3 = new Event("ABruv","30/05/2022","01:30","02:00",new ArrayList<>(Arrays.asList("1","2")),4,true);
+//        Event testToAdd = new Event("lool","30/05/2022","5:00","5:30",new ArrayList<>(Arrays.asList("1","2")),10,true);
 //
+//        event.add(_test);
+//        event.add(_test2);
+//        event.add(_test3);
+//
+//        DateStorage.addEventToDate(event);
+//        LinkedList<Event>[] solutions = DateStorage.getSuggestions("30/05/2022",testToAdd);
+////        System.out.println("I made it bruv");
+//        for (Event e : solutions[0]) {
+////            System.out.println(e.getTitle()+" "+e.getStartTime()+" "+e.getEndTime());
+//        }
+//    }
+////
 
     public void addSuggested() {
         suggestion1.setDate(solutionDate, solutions[0], false);
@@ -139,5 +135,17 @@ public class MainFrame extends JFrame{
 
     public CalendarPanel getCalendarPanel() {
         return calendarPanel;
+    }
+
+    public DatePanel getSuggestion1() {
+        return suggestion1;
+    }
+
+    public DatePanel getSuggestion2() {
+        return suggestion2;
+    }
+
+    public DatePanel getSuggestion3() {
+        return suggestion3;
     }
 }
