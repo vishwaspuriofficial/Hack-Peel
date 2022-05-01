@@ -18,6 +18,7 @@ public class Main {
         loadMainSave();
         loadRepeatedDays();
         gui = new MainFrame();
+        MainFrame.test();
     }
 
     public static MainFrame getGui() {
@@ -50,7 +51,6 @@ public class Main {
             line = br.readLine();
         }
         br.close();
-
     }
 
 
