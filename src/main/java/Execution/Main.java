@@ -18,8 +18,8 @@ public class Main {
         loadMainSave();
         loadRepeatedDays();
         gui = new MainFrame();
-        saveEvent();
-        saveRepeatedEvent();
+//        saveEvent();
+//        saveRepeatedEvent();
     }
 
     public static MainFrame getGui() {
