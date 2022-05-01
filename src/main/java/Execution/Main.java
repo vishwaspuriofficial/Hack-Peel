@@ -45,7 +45,7 @@ public class Main {
             } else {
                 String[] attributes = line.split("∂");
                 ArrayList<String> attr3 = new ArrayList<>(Arrays.asList(attributes[3].split(",")));
-                plannedDatesData.get(currentDate).add(new Event(attributes[0], line.replace("#", ""), attributes[1], attributes[2], attr3, Integer.parseInt(attributes[4]), Boolean.parseBoolean(attributes[5])));
+                plannedDatesData.get(currentDate).add(new Event(attributes[0], currentDate, attributes[1], attributes[2], attr3, Integer.parseInt(attributes[4]), Boolean.parseBoolean(attributes[5])));
             }
             line = br.readLine();
         }
