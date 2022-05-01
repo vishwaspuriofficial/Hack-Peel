@@ -3,6 +3,7 @@ package UserInterface;
 import Execution.Main;
 import Scripts.DateStorage;
 import Scripts.Event;
+import static Assets.Pallete.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +25,7 @@ public class MainFrame extends JFrame{
         this.setResizable(false);
         this.setTitle("Optistrads");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setVisible(true);
+        this.colorTheme();
 
         calendarPanel = new CalendarPanel();
         datePanel = new DatePanel();
@@ -54,7 +55,7 @@ public class MainFrame extends JFrame{
     }
 
     public void colorTheme() {
-
+        this.setBackground(dmainBackColor);
     }
 
     public DatePanel getDatePanel() {

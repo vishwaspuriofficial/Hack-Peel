@@ -40,12 +40,12 @@ public class Main {
         String currentDate = "";
         while (line!= null) {
             if (line.charAt(0)=='#') {
-                plannedDatesData.put(line, new LinkedList<>());
-                currentDate = line;
+                plannedDatesData.put(line.replace("#", ""), new LinkedList<>());
+                currentDate = line.replace("#", "");
             } else {
                 String[] attributes = line.split("∂");
                 ArrayList<String> attr3 = new ArrayList<>(Arrays.asList(attributes[3].split(",")));
-                plannedDatesData.get(currentDate).add(new Event(attributes[0], line.replace("#", ""), attributes[1], attributes[2], attr3, Integer.parseInt(attributes[4])));
+                plannedDatesData.get(currentDate).add(new Event(attributes[0], currentDate, attributes[1], attributes[2], attr3, Integer.parseInt(attributes[4])));
             }
             line = br.readLine();
         }
