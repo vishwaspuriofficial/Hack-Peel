@@ -53,7 +53,7 @@ public class DateStorage {
         plannedDatesData.remove(date,_event);
     }
 
-    public int getEventDay(LocalDate date){
+    public static int getEventDay(LocalDate date){
         int eventDay = 0;
         switch(date.getDayOfWeek().toString()){
             case "MONDAY":
@@ -81,7 +81,7 @@ public class DateStorage {
         return eventDay;
     }
 
-    public LinkedList<Event> getMerge(String _date){
+    public static LinkedList<Event> getMerge(String _date){
 
         HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
         LinkedList<Event> mainEvents = (LinkedList<Event>) plannedDatesData.get(_date).clone();
@@ -109,7 +109,7 @@ public class DateStorage {
     }
 
     public static LinkedList<Event>[] getSuggestions(String _date, Event _event) throws CloneNotSupportedException {
-        LinkedList<Event> mainEvents = Main.getPlannedDatesData().get(_date);
+        LinkedList<Event> mainEvents = getMerge(_date);
 
         //Algorithm part
         ArrayList<Float> startTimeLst = new ArrayList<>();
@@ -117,13 +117,13 @@ public class DateStorage {
 
         //Getting the dates from string to float, and storing all these busy slots to start time lst
         for(Event event : mainEvents){
-            String[] split = event.startTime.split(":");
-            float hour = Float.parseFloat(split[0]);
-            float minute = Float.parseFloat((split[1]))/10;
-            if(minute == 0.3){
-                minute += 0.2;
-            }
-            float time = hour+minute;
+                String[] split = event.startTime.split(":");
+                float hour = Float.parseFloat(split[0]);
+                float minute = Float.parseFloat((split[1]))/10;
+                if(minute == 0.3){
+                    minute += 0.2;
+                }
+                float time = hour+minute;
             startTimeLst.add(time);
         }
         Collections.sort(startTimeLst);
@@ -133,16 +133,21 @@ public class DateStorage {
         float currentTime = 0.0f; //float flaw
 
         //Very high potential to be very bad (just smth in case I can't find a better solution)
-        for(int i = 0; i < startTimeLst.size();){
-            if(currentTime == startTimeLst.get(i)){
-                i++;
+        int x = 0;
+        Boolean stop = false;
+        while(currentTime != 48) {
+
+            if(x != startTimeLst.size()) {
+                if (currentTime == startTimeLst.get(x)) {
+                    x++;
+                }
             }
-            else{
+            else {
                 availableTimeSlots.add(currentTime);
             }
             currentTime += 0.50;
-
         }
+
 
         //preparing the list of possible solutions
         LinkedList<Event>[] possibleSolutions = new LinkedList[2];
@@ -166,8 +171,10 @@ public class DateStorage {
                     newStartTime -= 0.20;
                 }
                 newEndTime = newStartTime + 0.30f;
-                solEvent.startTime = String.valueOf(newStartTime);
-                solEvent.endTime = String.valueOf(newEndTime);
+                solEvent.startTime = String.valueOf(newStartTime).replace(".",":");
+                solEvent.endTime = String.valueOf(newEndTime).replace(".",":");
+
+
 
                 possibleSolutions[solutionIndex].add(solEvent);
 
@@ -175,25 +182,8 @@ public class DateStorage {
                 space = 5;
             }
             else{
-                space -= 5;
+                space -= 1;
                 maybeTimeSlots.add(availableTimeSlots.get(i));
-            }
-        }
-
-        if (solutionIndex != 2){
-            for(int i = 0; i < solutionIndex; i++){
-                Event solEvent = (Event) _event.clone();
-                float newStartTime = maybeTimeSlots.get(i);
-                float newEndTime = 0;
-                if(newStartTime - (newStartTime-0.5f) == 0.5){
-                    newStartTime -= 0.20;
-                }
-                newEndTime = newStartTime+0.30f;
-
-                solEvent.startTime = String.valueOf(newStartTime);
-                solEvent.endTime = String.valueOf(newEndTime);
-
-                possibleSolutions[solutionIndex].add(solEvent);
             }
         }
 
