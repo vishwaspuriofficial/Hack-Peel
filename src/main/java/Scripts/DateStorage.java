@@ -263,10 +263,10 @@ public class DateStorage {
             Date ET = df.parse(endTime);
             String[] eTime= String.valueOf(ET).split(":");
 
-            Event EVENT = (Event) _event.clone();
-            EVENT.startTime = sTime[0].substring(-2,0)+sTime[1].substring(0,2);
-            EVENT.endTime = eTime[0].substring(-2,0)+eTime[1].substring(0,2);
 
+
+            _event.startTime = sTime[0].split(" ")[3]+":"+sTime[1];
+            _event.endTime = eTime[0].split(" ")[3]+":"+eTime[1];
             //Remove from available time slot
             for (float y = ct; y <= (ct + (ti * 0.5)); y++) {
                 availableTimeSlots.remove(y);
@@ -276,7 +276,7 @@ public class DateStorage {
 //            for (float y=ct; y<=(ct + (ti * 0.5)); y++) {
 //                busyTimeSlots.remove(y);
 //            }
-            return EVENT;
+            return _event;
         }
         return null; //This means no time slot available
 
