@@ -201,6 +201,7 @@ public class DateStorage {
             }
             s3.add(result);
         }
+//        System.out.println(s1);
         return possibleSolutions;
     }
 
@@ -235,8 +236,8 @@ public class DateStorage {
             //1: Proper Time format to event
             //2: Remove from Available Time Slot
 
-            float s = availableTimeSlots.get((int) ct);
-            float e = availableTimeSlots.get((int) (ct + (ti * 0.5)));
+            float s = availableTimeSlots.indexOf(ct);
+            float e = availableTimeSlots.indexOf(ct + (ti * 0.5f));
 
             int sh = (int) s;
             float sm = s - sh;
@@ -258,11 +259,13 @@ public class DateStorage {
             String endTime = String.valueOf(eh) + ":" + String.valueOf(em);
             DateFormat df = new SimpleDateFormat("hh:mm");
             Date ST = df.parse(startTime);
+            String[] sTime= String.valueOf(ST).split(":");
             Date ET = df.parse(endTime);
+            String[] eTime= String.valueOf(ET).split(":");
 
             Event EVENT = (Event) _event.clone();
-            EVENT.startTime = String.valueOf(ST);
-            EVENT.endTime = String.valueOf(ET);
+            EVENT.startTime = sTime[0].substring(-2,0)+sTime[1].substring(0,2);
+            EVENT.endTime = eTime[0].substring(-2,0)+eTime[1].substring(0,2);
 
             //Remove from available time slot
             for (float y = ct; y <= (ct + (ti * 0.5)); y++) {
