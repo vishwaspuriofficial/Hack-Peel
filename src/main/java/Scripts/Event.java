@@ -70,4 +70,5 @@ public class Event implements Cloneable,Comparable<Event>{
     public int compareTo(Event o) {
         return this.stressLevel-o.stressLevel;
     }
+
 }

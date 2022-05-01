@@ -11,9 +11,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Executable;
 import java.security.DigestException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class DatePanel extends JPanel implements ActionListener{
+    private String date;
+    private LinkedList<Event> plans;
+
     private JPanel mainContentPanel, headerPanel, backButtonContainer,centerContainer, timeLineContainer, eventList, eventListContainer,
             eastButtonContainer, gridButtonContainer, vertScrollMarginContainer, suggestionContainer;
     private JPanel backNorthMargin, backSouthMargin, backWestMargin, westMargin1, eastMargin1, westMargin2, southMargin1, northMargin3,
@@ -24,7 +29,15 @@ public class DatePanel extends JPanel implements ActionListener{
     private JButton back, addEvent, selectSolution, nextSuggestion, previousSuggestion;
     private boolean selected, menuUp = false;
 
-    private JPanel menuPanel, solidMenu, translucentMenu;
+    private JPanel menuPanel, solidMenu, translucentMenu, menuContentPanel;
+    private JLabel menuTitle, addEventTitle, addEventType, addEventStart, addEventEnd, addEventRepeat, addEventLevel;
+    private JScrollPane menuScrollPane;
+    private int heightV=50, marginV=10, sectionV=20, heightC=0, marginC=1, sectionC=0;
+    private JTextField inEventTitle, inEventStart, inEventEnd;
+    private JRadioButton staticEvent, dynamicEvent, levelOne, levelTwo, levelThree, levelFour, levelFive;
+    private ButtonGroup eventType, eventLevel;
+    private JCheckBox mon, tue, wed, thu, fri, sat, sun;
+    private JButton cancel, confirm;
 
     public DatePanel() {
         this.setLayout(null);
@@ -197,12 +210,203 @@ public class DatePanel extends JPanel implements ActionListener{
 
 
 
+
+        menuTitle = new JLabel("    Add new event: ");
+        menuTitle.setPreferredSize(new Dimension(510, 100));
+        menuTitle.setFont(new Font("Trebuchet MS", Font.BOLD, 36));
+
+        addEventTitle = new JLabel("Event Title:");
+        addEventTitle.setFont(new Font("Georgia", Font.PLAIN, 24));
+        addEventTitle.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++; marginC++;
+
+        inEventTitle = new JTextField();
+        inEventTitle.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 400, this.heightV);
+        inEventTitle.setFont(new Font("", Font.PLAIN, 18));
+        marginC++; heightC++; sectionC++;
+
+        addEventType = new JLabel("Event Type:");
+        addEventType.setFont(new Font("Georgia", Font.PLAIN, 24));
+        addEventType.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++; marginC++;
+
+        staticEvent = new JRadioButton("static event");
+        staticEvent.setFont(new Font("Georgia", Font.PLAIN, 18));
+        staticEvent.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 150, this.heightV);
+        staticEvent.addActionListener(this);
+
+        dynamicEvent = new JRadioButton("dynamic event");
+        dynamicEvent.setFont(new Font("Georgia", Font.PLAIN, 20));
+        dynamicEvent.setBounds(200, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 170, this.heightV);
+        dynamicEvent.addActionListener(this);
+        heightC++; marginC++; sectionC++;
+
+        eventType = new ButtonGroup();
+        eventType.add(staticEvent);
+        eventType.add(dynamicEvent);
+        eventType.setSelected(dynamicEvent.getModel(), true);
+
+        addEventStart = new JLabel("Event Start Time:");
+        addEventStart.setFont(new Font("Georgia", Font.PLAIN, 24));
+        addEventStart.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++; marginC++;
+
+        inEventStart = new JTextField();
+        inEventStart.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 400, this.heightV);
+        inEventStart.setFont(new Font("", Font.PLAIN, 18));
+        inEventStart.setText("hh:mm (24 hours time)");
+        marginC++; heightC++; sectionC++;
+
+        addEventEnd = new JLabel("Event End Time:");
+        addEventEnd.setFont(new Font("Georgia", Font.PLAIN, 24));
+        addEventEnd.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++; marginC++;
+
+        inEventEnd = new JTextField();
+        inEventEnd.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 400, this.heightV);
+        inEventEnd.setFont(new Font("", Font.PLAIN, 18));
+        inEventEnd.setText("hh:mm (24 hours time)");
+        marginC++; heightC++; sectionC++;
+
+        addEventRepeat = new JLabel("Repeat Pattern:");
+        addEventRepeat.setFont(new Font("Georgia", Font.PLAIN, 24));
+        addEventRepeat.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++; marginC++;
+
+        mon = new JCheckBox("Monday");
+        mon.setFont(new Font("Georgia", Font.PLAIN, 20));
+        mon.setFocusable(false);
+        mon.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++;
+
+        tue = new JCheckBox("Tuesday");
+        tue.setFont(new Font("Georgia", Font.PLAIN, 20));
+        tue.setFocusable(false);
+        tue.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++;
+
+        wed = new JCheckBox("Wednesday");
+        wed.setFont(new Font("Georgia", Font.PLAIN, 20));
+        wed.setFocusable(false);
+        wed.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++;
+
+        thu = new JCheckBox("Thursday");
+        thu.setFont(new Font("Georgia", Font.PLAIN, 20));
+        thu.setFocusable(false);
+        thu.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++;
+
+        fri = new JCheckBox("Friday");
+        fri.setFont(new Font("Georgia", Font.PLAIN, 20));
+        fri.setFocusable(false);
+        fri.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++;
+
+        sat = new JCheckBox("Saturday");
+        sat.setFont(new Font("Georgia", Font.PLAIN, 20));
+        sat.setFocusable(false);
+        sat.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++;
+
+        sun = new JCheckBox("Sunday");
+        sun.setFont(new Font("Georgia", Font.PLAIN, 20));
+        sun.setFocusable(false);
+        sun.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++; marginC++; sectionC++;
+
+        addEventLevel = new JLabel("Priority Level:");
+        addEventLevel.setFont(new Font("Georgia", Font.PLAIN, 24));
+        addEventLevel.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 350, this.heightV);
+        heightC++; marginC++;
+
+        levelOne = new JRadioButton("1");
+        levelOne.setFont(new Font("Georgia", Font.PLAIN, 18));
+        levelOne.setBounds(50, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 50, this.heightV);
+
+        levelTwo = new JRadioButton("2");
+        levelTwo.setFont(new Font("Georgia", Font.PLAIN, 18));
+        levelTwo.setBounds(110, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 50, this.heightV);
+
+        levelThree = new JRadioButton("3");
+        levelThree.setFont(new Font("Georgia", Font.PLAIN, 18));
+        levelThree.setBounds(170, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 50, this.heightV);
+
+        levelFour = new JRadioButton("4");
+        levelFour.setFont(new Font("Georgia", Font.PLAIN, 18));
+        levelFour.setBounds(230, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 50, this.heightV);
+
+        levelFive = new JRadioButton("5");
+        levelFive.setFont(new Font("Georgia", Font.PLAIN, 18));
+        levelFive.setBounds(290, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC, 50, this.heightV);
+
+        eventLevel = new ButtonGroup();
+        eventLevel.add(levelOne);
+        eventLevel.add(levelTwo);
+        eventLevel.add(levelThree);
+        eventLevel.add(levelFour);
+        eventLevel.add(levelFive);
+        eventLevel.setSelected(levelOne.getModel(), true);
+        heightC++; marginC++; sectionC++;
+
+        cancel = new JButton("cancel");
+        cancel.setBorderPainted(false);
+        cancel.setFont(new Font("Georgia", Font.PLAIN, 18));
+        cancel.setPreferredSize(new Dimension(180, 70));
+        cancel.setOpaque(true);
+        cancel.setBounds(160, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC+20, 110, this.heightV);
+        cancel.addActionListener(this);
+
+        confirm = new JButton("confirm");
+        confirm.setBorderPainted(false);
+        confirm.setFont(new Font("Georgia", Font.PLAIN, 18));
+        confirm.setPreferredSize(new Dimension(180, 70));
+        confirm.setOpaque(true);
+        confirm.setBounds(290, this.marginV*marginC+this.heightV*heightC+this.sectionV*sectionC+20, 110, this.heightV);
+        confirm.addActionListener(this);
+
+
+        menuContentPanel = new JPanel();
+        menuContentPanel.setPreferredSize(new Dimension(510, 1300));
+        menuContentPanel.setLayout(null);
+        menuContentPanel.add(addEventTitle);
+        menuContentPanel.add(inEventTitle);
+        menuContentPanel.add(addEventType);
+        menuContentPanel.add(staticEvent);
+        menuContentPanel.add(dynamicEvent);
+        menuContentPanel.add(addEventStart);
+        menuContentPanel.add(inEventStart);
+        menuContentPanel.add(addEventEnd);
+        menuContentPanel.add(inEventEnd);
+        menuContentPanel.add(addEventRepeat);
+        menuContentPanel.add(mon);
+        menuContentPanel.add(tue);
+        menuContentPanel.add(wed);
+        menuContentPanel.add(thu);
+        menuContentPanel.add(fri);
+        menuContentPanel.add(sat);
+        menuContentPanel.add(sun);
+        menuContentPanel.add(addEventLevel);
+        menuContentPanel.add(levelOne);
+        menuContentPanel.add(levelTwo);
+        menuContentPanel.add(levelThree);
+        menuContentPanel.add(levelFour);
+        menuContentPanel.add(levelFive);
+        menuContentPanel.add(cancel);
+        menuContentPanel.add(confirm);
+
+        menuScrollPane = new JScrollPane(menuContentPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        menuScrollPane.setPreferredSize(new Dimension(510, 700));
+        menuScrollPane.setBorder(null);
+        menuScrollPane.getVerticalScrollBar().setUnitIncrement(10);
+
         solidMenu = new JPanel();
-        solidMenu.setBackground(new Color(21, 20, 20));
         solidMenu.setPreferredSize(new Dimension(510, 800));
+        solidMenu.setLayout(new BorderLayout());
+        solidMenu.add(menuTitle, BorderLayout.NORTH);
+        solidMenu.add(menuScrollPane, BorderLayout.CENTER);
 
         translucentMenu = new JPanel();
-        translucentMenu.setBackground(new Color(26, 25, 25, 180));
         translucentMenu.setPreferredSize(new Dimension(690, 800));
 
         menuPanel = new JPanel();
@@ -225,6 +429,7 @@ public class DatePanel extends JPanel implements ActionListener{
 
     }
 
+    //
     public void updateTimeLine() {
 
     }
@@ -296,6 +501,8 @@ public class DatePanel extends JPanel implements ActionListener{
     //TODO: this method is not done, need to add timeline update here
     public void setDate(String date, LinkedList<Event> plans, boolean isSetSolution) {
         title.setText("     " + date.replace("#", ""));
+        this.plans = plans;
+        this.date = date.replace("#", "");
         if (isSetSolution) {
             selected = true;
             selectSolution.setText("Solution selected");
@@ -349,6 +556,45 @@ public class DatePanel extends JPanel implements ActionListener{
         message.setForeground(dlabelForeColor);
         eventListContainer.setBackground(dlistBackColor);
         eventList.setBackground(dlistBackColor);
+
+
+        menuTitle.setForeground(dlabelForeColor);
+        addEventTitle.setForeground(dlabelForeColor);
+        inEventTitle.setForeground(dtextFieldForeColor);
+        inEventTitle.setBackground(dtextFieldBackColor);
+        inEventTitle.setCaretColor(dtextFieldCaretColor);
+        addEventType.setForeground(dlabelForeColor);
+        staticEvent.setForeground(dlabelForeColor);
+        dynamicEvent.setForeground(dlabelForeColor);
+        addEventStart.setForeground(dlabelForeColor);
+        inEventStart.setForeground(dtextFieldForeColor);
+        inEventStart.setBackground(dtextFieldBackColor);
+        inEventStart.setCaretColor(dtextFieldCaretColor);
+        addEventEnd.setForeground(dlabelForeColor);
+        inEventEnd.setForeground(dtextFieldForeColor);
+        inEventEnd.setBackground(dtextFieldBackColor);
+        inEventEnd.setCaretColor(dtextFieldCaretColor);
+        addEventRepeat.setForeground(dtitleForeColor);
+        mon.setForeground(dlabelForeColor);
+        tue.setForeground(dlabelForeColor);
+        wed.setForeground(dlabelForeColor);
+        thu.setForeground(dlabelForeColor);
+        fri.setForeground(dlabelForeColor);
+        sat.setForeground(dlabelForeColor);
+        sun.setForeground(dlabelForeColor);
+        addEventLevel.setForeground(dlabelForeColor);
+        levelOne.setForeground(dlabelForeColor);
+        levelTwo.setForeground(dlabelForeColor);
+        levelThree.setForeground(dlabelForeColor);
+        levelFour.setForeground(dlabelForeColor);
+        levelFive.setForeground(dlabelForeColor);
+        cancel.setBackground(dbuttonBackColor);
+        cancel.setForeground(dlabelForeColor);
+        confirm.setBackground(dbuttonBackColor);
+        confirm.setForeground(dlabelForeColor);
+        solidMenu.setBackground(new Color(21, 20, 20));
+        translucentMenu.setBackground(new Color(26, 25, 25, 180));
+        menuContentPanel.setBackground(new Color(21, 20, 20));
     }
 
 //  TODO: finish the action listener alex
@@ -365,9 +611,35 @@ public class DatePanel extends JPanel implements ActionListener{
                 selectSolution.setBorderPainted(true);
                 selectSolution.setBorder(BorderFactory.createEtchedBorder(0));
                 suggestionContainer.setVisible(false);
+                Execution.Main.getPlannedDatesData().replace(this.date, this.plans);
             }
         } else if (e.getSource()==back && !menuUp) {
             Execution.Main.getGui().changePanel("1");
+        } else if (e.getSource()==cancel && menuUp) {
+            menuPanel.setVisible(menuUp = false);
+        } else if (e.getSource()==confirm) {
+            //TODO:
+            ArrayList<String> repeatList = new ArrayList<>();
+            if (mon.isSelected()) repeatList.add("1");
+            if (tue.isSelected()) repeatList.add("2");
+            if (wed.isSelected()) repeatList.add("3");
+            if (thu.isSelected()) repeatList.add("4");
+            if (fri.isSelected()) repeatList.add("5");
+            if (sat.isSelected()) repeatList.add("6");
+            if (sun.isSelected()) repeatList.add("7");
+//            Event newEvent = new Event(inEventTitle.getText(), date, inEventStart.getText(), inEventEnd.getText(), repeatList, )
+        } else if (e.getSource()==staticEvent && menuUp) {
+            inEventStart.setText("hh:mm (24 hours time)");
+            addEventEnd.setText("Event End Time:");
+            inEventEnd.setText("hh:mm (24 hours time)");
+            inEventStart.setEnabled(true);
+            inEventEnd.setEnabled(true);
+        } else if (e.getSource()==dynamicEvent && menuUp) {
+            inEventStart.setText("Disabled due to dynamic event type");
+            addEventEnd.setText("Length of event:");
+            inEventEnd.setText("enter the length of event in hh:mm format");
+            inEventStart.setEnabled(false);
         }
+
     }
 }

@@ -16,7 +16,8 @@ public class Main {
         loadMainSave();
         loadRepeatedDays();
         gui = new MainFrame();
-        Event test = new Event("Gym","30/04/2022","10:00","10:30",new ArrayList<>(Arrays.asList("1","2")),4,true);
+//        Event test = new Event("Gym","30/04/2022","10:00","10:30",new ArrayList<>(Arrays.asList("1","2")),4,true);
+
         //saveEvent(test);
         //saveRepeatedEvent(test);
     }
@@ -40,8 +41,8 @@ public class Main {
         String currentDate = "";
         while (line!= null) {
             if (line.charAt(0)=='#') {
-                plannedDatesData.put(line, new LinkedList<>());
-                currentDate = line;
+                plannedDatesData.put(line.replace("#", ""), new LinkedList<>());
+                currentDate = line.replace("#", "");
             } else {
                 String[] attributes = line.split("∂");
                 ArrayList<String> attr3 = new ArrayList<>(Arrays.asList(attributes[3].split(",")));
