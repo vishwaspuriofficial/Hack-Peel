@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) throws IOException, ParseException, CloneNotSupportedException {
         loadMainSave();
         loadRepeatedDays();
-//        gui = new MainFrame();
+        gui = new MainFrame();
         MainFrame.test();
     }
 

@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class DatePanel extends JPanel implements ActionListener{
     private String date;
@@ -39,6 +40,8 @@ public class DatePanel extends JPanel implements ActionListener{
     private ButtonGroup eventType, eventLevel;
     private JCheckBox mon, tue, wed, thu, fri, sat, sun;
     private JButton cancel, confirm;
+
+    private Color[] colorList;
 
     public DatePanel() {
         this.setLayout(null);
@@ -437,16 +440,18 @@ public class DatePanel extends JPanel implements ActionListener{
         eventList.removeAll();
         eventList.setPreferredSize(new Dimension(700, events.size()==0 ? 300 : 80*events.size()));
         eventListContainer.setPreferredSize(new Dimension(700, 80* events.size()));
+        int index = 0;
         if (events.size()==0) {
             eventList.add(message);
             eventList.setLayout(new FlowLayout(0, 150, 140));
         } else {
             for (Event e : events) {
                 //TODO: use random color generator later
-                EventListItem eventListItem = new EventListItem(e.getTitle(), e.getStartTime(), e.getEndTime(), Color.blue);
+                EventListItem eventListItem = new EventListItem(e.getTitle(), e.getStartTime(), e.getEndTime(), this.colorList[index]);
                 eventListItem.colorTheme();
                 eventList.setLayout(new FlowLayout(0, 0, 0));
                 eventList.add(eventListItem);
+                index++;
             }
         }
 
@@ -502,6 +507,8 @@ public class DatePanel extends JPanel implements ActionListener{
         title.setText("     " + date.replace("#", ""));
         this.plans = plans;
         this.date = date.replace("#", "");
+        this.colorList = new Color[plans.size()];
+        generateColor();
         if (isSetSolution) {
             selected = true;
             selectSolution.setText("Solution selected");
@@ -515,6 +522,17 @@ public class DatePanel extends JPanel implements ActionListener{
             selectSolution.setText("Select solution");
         }
         updateVertList(plans);
+    }
+
+    public void generateColor() {
+        Random random = new Random();
+        for (int i=0; i<this.colorList.length; i++) {
+            float r = (float) (random.nextFloat() / 2f + 0.5);
+            float g = (float) (random.nextFloat() / 2f + 0.5);
+            float b = (float) (random.nextFloat() / 2f + 0.5);
+            Color randomColor = new Color(r, g, b);
+            this.colorList[i] = randomColor;
+        }
     }
 
     public void colorTheme() {
