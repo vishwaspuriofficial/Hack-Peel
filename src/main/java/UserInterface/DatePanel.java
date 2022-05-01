@@ -616,7 +616,7 @@ public class DatePanel extends JPanel implements ActionListener{
             menuPanel.setVisible(menuUp = false);
         } else if (e.getSource()==confirm) {
             //TODO:
-            Event newEvent = new Event(inEventTitle.getText(), date, )
+//            Event newEvent = new Event(inEventTitle.getText(), date, )
         } else if (e.getSource()==staticEvent && menuUp) {
             System.out.println("static");
             inEventStart.setText("hh:mm (24 hours time)");

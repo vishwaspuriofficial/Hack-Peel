@@ -62,4 +62,8 @@ public class Event implements Cloneable{
     public int getTimeInterval() {
         return timeInterval;
     }
+
+    public boolean getDynamic() {
+        return dynamic;
+    }
 }
