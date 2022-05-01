@@ -82,16 +82,14 @@ public class DatePanel extends JPanel implements ActionListener{
         nextSuggestion.setFont(new Font("Georgia", Font.PLAIN, 16));
         nextSuggestion.setPreferredSize(new Dimension(160, 60));
         nextSuggestion.setOpaque(true);
-        nextSuggestion.addActionListener(this);
 
         previousSuggestion = new JButton("<-- Previous");
         previousSuggestion.setBorderPainted(false);
         previousSuggestion.setFont(new Font("Georgia", Font.PLAIN, 16));
         previousSuggestion.setPreferredSize(new Dimension(160, 60));
         previousSuggestion.setOpaque(true);
-        previousSuggestion.addActionListener(this);
 
-        suggestionNumber = new JLabel("suggestion 2", SwingConstants.CENTER);
+        suggestionNumber = new JLabel("", SwingConstants.CENTER);
         suggestionNumber.setPreferredSize(new Dimension(160, 60));
         suggestionNumber.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
 
@@ -632,6 +630,7 @@ public class DatePanel extends JPanel implements ActionListener{
             }
         } else if (e.getSource()==back && !menuUp) {
             Execution.Main.getGui().changePanel("1");
+            Execution.Main.getGui().getCalendarPanel().updateList();
         } else if (e.getSource()==cancel && menuUp) {
             menuPanel.setVisible(menuUp = false);
         } else if (e.getSource()==confirm) {
@@ -661,6 +660,7 @@ public class DatePanel extends JPanel implements ActionListener{
             try {
                 Execution.Main.getGui().setSolutions(Scripts.DateStorage.getSuggestions(date, newEvent));
                 Execution.Main.getGui().setSolutionDate(date);
+                Execution.Main.getGui().addSuggested();
             } catch (CloneNotSupportedException ex) {
                 ex.printStackTrace();
             } catch (ParseException ex) {
@@ -679,5 +679,27 @@ public class DatePanel extends JPanel implements ActionListener{
             inEventStart.setEnabled(false);
         }
 
+    }
+
+    public void setPreviousSuggestion(String targetPage) {
+        this.previousSuggestion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Execution.Main.getGui().changePanel(targetPage);
+            }
+        });
+    }
+
+    public void setNextSuggestion(String targetPage) {
+        this.nextSuggestion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Execution.Main.getGui().changePanel(targetPage);
+            }
+        });
+    }
+
+    public void setSuggestionNumber(String text) {
+        this.suggestionNumber.setText("suggestion " + text);
     }
 }

@@ -98,7 +98,8 @@ public class DateStorage {
         //Merge repeated and main events
         for (Event event : repeatedEvents) {
             for (String repeatDay : event.repeatDate) {
-                if (Integer.parseInt(repeatDay) == eventDay)//Check to see if main events list of the date chosen requires the merge of repeated events
+                if (Integer.parseInt(repeatDay) == eventDay)//Check to see if main event
+                    // s list of the date chosen requires the merge of repeated events
                 {
                     mainEvents.add(event); //Adds
                 }

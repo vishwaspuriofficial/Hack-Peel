@@ -55,6 +55,9 @@ public class MainFrame extends JFrame{
 
         content.add(calendarPanel, "1");
         content.add(datePanel, "2");
+        content.add(suggestion1, "3");
+        content.add(suggestion2, "4");
+        content.add(suggestion3, "5");
 
         cardLayout.show(content, "1");
         calendarPanel.updateList();
@@ -101,9 +104,30 @@ public class MainFrame extends JFrame{
 
     public void addSuggested() {
         suggestion1.setDate(solutionDate, solutions[0], false);
-        suggestion2.setDate(solutionDate, solutions[1], false);
-        suggestion3.setDate(solutionDate, solutions[2], false);
+        suggestion1.setSuggestionNumber("1");
+        suggestion1.setNextSuggestion("4");
+        suggestion1.setPreviousSuggestion("5");
+        for (Event event : solutions[0]) {
+            System.out.println(event.getTitle());
+        }
+        for (Event event : solutions[1]) {
+            System.out.println(event.getTitle());
+        }
+        for (Event event : solutions[2]) {
+            System.out.println(event.getTitle());
+        }
 
+        suggestion2.setDate(solutionDate, solutions[1], false);
+        suggestion2.setSuggestionNumber("2");
+        suggestion2.setNextSuggestion("5");
+        suggestion2.setPreviousSuggestion("3");
+
+        suggestion3.setDate(solutionDate, solutions[2], false);
+        suggestion3.setSuggestionNumber("3");
+        suggestion3.setNextSuggestion("3");
+        suggestion3.setPreviousSuggestion("4");
+
+        cardLayout.show(content, "3");
     }
 
     public LinkedList<Event>[] getSolutions() {
@@ -120,5 +144,9 @@ public class MainFrame extends JFrame{
 
     public void setSolutionDate(String solutionDate) {
         this.solutionDate = solutionDate;
+    }
+
+    public CalendarPanel getCalendarPanel() {
+        return calendarPanel;
     }
 }
