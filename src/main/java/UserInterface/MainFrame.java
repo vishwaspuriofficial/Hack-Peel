@@ -78,6 +78,7 @@ public class MainFrame extends JFrame{
         return datePanel;
     }
     //Test Case
+
 //    public static void test() throws ParseException, CloneNotSupportedException {
 //        LinkedList<Event> event= new LinkedList<Event>();
 //        Event _test = new Event("EyLmao","30/05/2022","00:00","00:30",new ArrayList<>(Arrays.asList("1","2")),4, false);
@@ -88,6 +89,7 @@ public class MainFrame extends JFrame{
 //        event.add(_test);
 //        event.add(_test2);
 //        event.add(_test3);
+
 //
 //        DateStorage.addEventToDate(event);
 //        LinkedList<Event>[] solutions = DateStorage.getSuggestions("30/05/2022",testToAdd);
@@ -96,7 +98,7 @@ public class MainFrame extends JFrame{
 ////            System.out.println(e.getTitle()+" "+e.getStartTime()+" "+e.getEndTime());
 //        }
 //    }
-////
+
 
     public void addSuggested() {
         suggestion1.setDate(solutionDate, solutions[0], false);

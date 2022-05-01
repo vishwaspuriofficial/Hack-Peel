@@ -127,16 +127,27 @@ public class DateStorage {
         ArrayList<Float> busyTimeSlots = new ArrayList<>();
         ArrayList<Float> availableTimeSlots = new ArrayList<>();
 
+
+        ArrayList<Event> dynamicEvents = new ArrayList<>();
+        if (_event.dynamic) {
+            dynamicEvents.add(_event);
+        }
+        else {
+            mainEvents.add(_event);
+        }
+
         //Getting the dates from string to float, and storing all these busy slots to start time lst
         for (Event event : mainEvents) {
-            String[] split = event.startTime.split(":");
-            float hour = Float.parseFloat(split[0]);
-            float minute = Float.parseFloat((split[1])) / 10;
-            if (minute == 0.3) {
-                minute += 0.2;
+            if (!event.dynamic) {
+                String[] split = event.startTime.split(":");
+                float hour = Float.parseFloat(split[0]);
+                float minute = Float.parseFloat((split[1])) / 10;
+                if (minute == 0.3) {
+                    minute += 0.2;
+                }
+                float time = hour + minute;
+                busyTimeSlots.add(time);
             }
-            float time = hour + minute;
-            busyTimeSlots.add(time);
         }
         Collections.sort(busyTimeSlots);
 
@@ -147,13 +158,8 @@ public class DateStorage {
         //Very high potential to be very bad (just smth in case I can't find a better solution)
         int x = 0;
         Boolean stop = false;
-        while (currentTime != 48) {
-
-            if (x != busyTimeSlots.size()) {
-                if (currentTime == busyTimeSlots.get(x)) {
-                    x++;
-                }
-            } else {
+        while (currentTime != 24) {
+            if (!busyTimeSlots.contains(currentTime)) {
                 availableTimeSlots.add(currentTime);
             }
             currentTime += 0.50;
@@ -172,14 +178,18 @@ public class DateStorage {
 
 
 
-        ArrayList<Event> dynamicEvents = new ArrayList<>();
+
+
 
         for (Event e : mainEvents) {
             if (e.dynamic) {
                 dynamicEvents.add(e);
             }
         }
-        dynamicEvents.add(_event);
+
+
+
+
 
         //Solution 1: Random
         for (Event e : dynamicEvents) {
@@ -188,7 +198,12 @@ public class DateStorage {
                 s1=null;
                 break;
             }
-            s1.add(result);
+            if(s1.contains(_event)){
+                s1.set(s1.indexOf(result),result);
+            }
+            else{
+                s1.add(_event);
+            }
         }
 
         //Solution 2: Easy To Hard
@@ -200,7 +215,15 @@ public class DateStorage {
                 s2=null;
                 break;
             }
-            s2.add(result);
+            if(s2.contains(_event)){
+                s2.set(s2.indexOf(result),result);
+
+                //1 -
+
+            }
+            else{
+                s2.add(_event);
+            }
         }
 
         //Solution 3: Hard To Easy
@@ -212,7 +235,12 @@ public class DateStorage {
                 s3=null;
                 break;
             }
-            s3.add(result);
+            if(s3.contains(_event)){
+                s3.set(s3.indexOf(result),result);
+            }
+            else{
+                s3.add(_event);
+            }
         }
 //        System.out.println(s1);
         return possibleSolutions;
@@ -222,20 +250,19 @@ public class DateStorage {
 
     public static Event setPosition(Event _event, ArrayList<Float> availableTimeSlots) throws ParseException, CloneNotSupportedException {
         int i = 0;
+        int stm = Integer.parseInt(_event.startTime.split(":")[1]);
+        int sth = Integer.parseInt(_event.startTime.split(":")[0]);
+        int st = sth * 60 + stm;
+
+        int etm = Integer.parseInt(_event.endTime.split(":")[1]);
+        int eth = Integer.parseInt(_event.endTime.split(":")[0]);
+        int et = eth * 60 + etm;
+
+        int t = Math.abs(st - et);
+        int ti = Integer.valueOf(t / 30);
+
+        float ct = availableTimeSlots.get(i);
         while (i < availableTimeSlots.size()) {
-
-            int stm = Integer.parseInt(_event.startTime.split(":")[0]);
-            int sth = Integer.parseInt(_event.startTime.split(":")[1]);
-            int st = sth * 60 + stm;
-
-            int etm = Integer.parseInt(_event.endTime.split(":")[0]);
-            int eth = Integer.parseInt(_event.endTime.split(":")[1]);
-            int et = eth * 60 + etm;
-
-            int t = st - et;
-            int ti = Integer.valueOf(t / 30);
-
-            float ct = availableTimeSlots.get(i);
 
             //Finds if the time slots for the amount of time after a time slot is empty
             for (float z = ct; z < ct + (ti * 0.5); z += 0.5) {
@@ -249,34 +276,36 @@ public class DateStorage {
             //1: Proper Time format to event
             //2: Remove from Available Time Slot
 
-            float s = availableTimeSlots.indexOf(ct);
-            float e = availableTimeSlots.indexOf(ct + (ti * 0.5f));
-
-            int sh = (int) s;
-            float sm = s - sh;
-
-            sm = setDecimal(sm);
-            if (sm == 0) {
-                sh += 1;
+            int s = availableTimeSlots.indexOf(ct);
+            //Index of Starting time
+            int e = availableTimeSlots.indexOf(ct + (ti * 0.5f));
+            if(s == -1 || e == -1){
+                return null;
             }
 
+            //Index of Ending time
+
+            float sh = availableTimeSlots.get(s) ;
+
+            //make exact time sh:sm
+            int smt = setDecimal(sh);
+
+            //make exact time eh:em
             int eh = (int) e;
-            float em = e - eh;
+            float em = Math.abs(eh - availableTimeSlots.get(e));
 
-            em = setDecimal(em);
-            if (em == 0) {
-                eh += 1;
-            }
+            int emt = setDecimal(em);
 
-            String startTime = String.valueOf(sh) + ":" + String.valueOf(sm);
-            String endTime = String.valueOf(eh) + ":" + String.valueOf(em);
+
+            //String times
+            String startTime = String.valueOf((int) sh) + ":" + String.valueOf(smt);
+            String endTime = String.valueOf(eh) + ":" + String.valueOf(emt);
+            //COnverting to datesformat
             DateFormat df = new SimpleDateFormat("hh:mm");
             Date ST = df.parse(startTime);
             String[] sTime= String.valueOf(ST).split(":");
             Date ET = df.parse(endTime);
             String[] eTime= String.valueOf(ET).split(":");
-
-
 
             _event.startTime = sTime[0].split(" ")[3]+":"+sTime[1];
             _event.endTime = eTime[0].split(" ")[3]+":"+eTime[1];
