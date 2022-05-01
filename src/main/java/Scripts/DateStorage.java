@@ -151,7 +151,7 @@ public class DateStorage {
 
         //preparing the list of possible solutions
         LinkedList<Event>[] possibleSolutions = new LinkedList[2];
-        Arrays.fill(possibleSolutions,new LinkedList<Event>());
+        Arrays.fill(possibleSolutions, mainEvents.clone());
         ArrayList<Float> maybeTimeSlots = new ArrayList<Float>();
 
         //Get Possible solutions from list of open timeslots, *Get them 1-4 hours away from each other* (if events are static)
