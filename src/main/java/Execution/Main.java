@@ -3,6 +3,7 @@ package Execution;
 import Scripts.Event;
 import UserInterface.MainFrame;
 import java.io.File;
+import java.text.ParseException;
 import java.util.*;
 import java.io.*;
 
@@ -11,12 +12,13 @@ public class Main {
     private static HashMap<String, LinkedList<Event>> plannedDatesData = new HashMap<>();
     private static LinkedList<Event> repeatingEvents = new LinkedList<>();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParseException, CloneNotSupportedException {
         loadMainSave();
         loadRepeatedDays();
         gui = new MainFrame();
-        Event test = new Event("Gym","30/04/2022","10:00am","10:45am",new ArrayList<>(Arrays.asList("1","2")),new ArrayList<>(Arrays.asList("Shower")),4);
-        saveRepeatedEvent(test);
+        Event test = new Event("Gym","30/04/2022","10:00","10:30",new ArrayList<>(Arrays.asList("1","2")),4);
+        //saveEvent(test);
+        //saveRepeatedEvent(test);
     }
 
     public static MainFrame getGui() {
@@ -43,8 +45,7 @@ public class Main {
             } else {
                 String[] attributes = line.split("∂");
                 ArrayList<String> attr3 = new ArrayList<>(Arrays.asList(attributes[3].split(",")));
-                ArrayList<String> attr4 = new ArrayList<>(Arrays.asList(attributes[4].split(",")));
-                plannedDatesData.get(currentDate).add(new Event(attributes[0], line.replace("#", ""), attributes[1], attributes[2], attr3, attr4, Integer.parseInt(attributes[5])));
+                plannedDatesData.get(currentDate).add(new Event(attributes[0], line.replace("#", ""), attributes[1], attributes[2], attr3, Integer.parseInt(attributes[4])));
             }
             line = br.readLine();
         }
@@ -65,7 +66,7 @@ public class Main {
                 ArrayList<String> repeatedDays = new ArrayList<>(Arrays.asList(repeat));
                 String[] link = data[4].split(",");
                 ArrayList<String> linkedEvents = new ArrayList<>(Arrays.asList(link));
-                Event event = new Event(eventName,data[0],data[1],data[2],repeatedDays,linkedEvents,Integer.parseInt(data[5]));
+                Event event = new Event(eventName,data[0],data[1],data[2],repeatedDays,Integer.parseInt(data[5]));
                 repeatingEvents.add(event);
             }
             line = br.readLine();
@@ -84,10 +85,7 @@ public class Main {
         String[] repeatDates = event.getRepeatDate().toArray(new String[0]);
         String repeat = String.join(",", repeatDates);
 
-        String[] linkedEvents = event.getLinkedEvents().toArray(new String[0]);
-        String events = String.join(",", linkedEvents);
-
-        write.print("\n"+event.getTitle()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeat+"∂"+events+"∂"+event.getStressLevel()+"\n");
+        write.print("\n"+event.getTitle()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeat+"∂"+event.getStressLevel()+"\n");
 
         write.close();
     }
@@ -107,10 +105,7 @@ public class Main {
         String[] repeatDates = event.getRepeatDate().toArray(new String[0]);
         String repeat = String.join(",", repeatDates);
 
-        String[] linkedEvents = event.getLinkedEvents().toArray(new String[0]);
-        String events = String.join(",", linkedEvents);
-
-        write.print("\n"+event.getDate()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeat+"∂"+events+"∂"+event.getStressLevel()+"\n");
+        write.print("\n"+event.getDate()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeat+"∂"+event.getStressLevel()+"\n");
 
         write.close();
     }

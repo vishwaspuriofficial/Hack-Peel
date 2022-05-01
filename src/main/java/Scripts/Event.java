@@ -11,27 +11,28 @@ import java.util.Scanner;
 
 
 
-public class Event {
+public class Event implements Cloneable{
     String title;
     String startTime;
     String endTime;
     String date;
     ArrayList<String> repeatDate;
-    ArrayList<String> linkedEvents;
     int stressLevel;
     int timeInterval = 30;
 
-    public Event(String _title, String _date, String _startTime, String _endTime, ArrayList<String> _repeatDate, ArrayList<String> _linkedEvents, int _stressLevel){
+    public Event(String _title, String _date, String _startTime, String _endTime, ArrayList<String> _repeatDate, int _stressLevel){
         title = _title;
         date = _date;
         startTime = _startTime;
         endTime = _endTime;
         repeatDate = _repeatDate;
-        linkedEvents = _linkedEvents;
         stressLevel = _stressLevel;
     }
 
-
+    public Object clone() throws CloneNotSupportedException
+    {
+        return super.clone();
+    }
     public String getTitle() {
         return title;
     }
@@ -50,10 +51,6 @@ public class Event {
 
     public ArrayList<String> getRepeatDate() {
         return repeatDate;
-    }
-
-    public ArrayList<String> getLinkedEvents() {
-        return linkedEvents;
     }
 
     public int getStressLevel() {
