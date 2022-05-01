@@ -17,7 +17,8 @@ public class Main {
     public static void main(String[] args) throws IOException, ParseException, CloneNotSupportedException {
         loadMainSave();
         loadRepeatedDays();
-        gui = new MainFrame();
+//        gui = new MainFrame();
+        MainFrame.test();
     }
 
     public static MainFrame getGui() {
@@ -38,19 +39,30 @@ public class Main {
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line = br.readLine();
         String currentDate = "";
-        while (line!= null) {
-            if (line.charAt(0)=='#') {
+//        while (line!= null) {
+//            if (line.charAt(0)=='#') {
+//                plannedDatesData.put(line.replace("#", ""), new LinkedList<>());
+//                currentDate = line.replace("#", "");
+//            } else {
+//                String[] attributes = line.split("∂");
+//                ArrayList<String> attr3 = new ArrayList<>(Arrays.asList(attributes[3].split(",")));
+//                plannedDatesData.get(currentDate).add(new Event(attributes[0], currentDate, attributes[1], attributes[2], attr3, Integer.parseInt(attributes[4]), Boolean.parseBoolean(attributes[5])));
+//            }
+//            line = br.readLine();
+//        }
+        while (line != null) {
+            if (line.charAt(0) == '#') {
                 plannedDatesData.put(line.replace("#", ""), new LinkedList<>());
                 currentDate = line.replace("#", "");
-            } else {
+                line = br.readLine();
                 String[] attributes = line.split("∂");
                 ArrayList<String> attr3 = new ArrayList<>(Arrays.asList(attributes[3].split(",")));
-                plannedDatesData.get(currentDate).add(new Event(attributes[0], line.replace("#", ""), attributes[1], attributes[2], attr3, Integer.parseInt(attributes[4]), Boolean.parseBoolean(attributes[5])));
+                plannedDatesData.get(currentDate).add(new Event(attributes[0], currentDate, attributes[1], attributes[2], attr3, Integer.parseInt(attributes[4]), Boolean.parseBoolean(attributes[5])));
             }
             line = br.readLine();
+
         }
         br.close();
-
     }
 
 
