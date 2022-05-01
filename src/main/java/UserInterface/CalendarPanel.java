@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Executable;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -91,8 +92,9 @@ public class CalendarPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()== searchButton || e.getSource()==searchbox) {
-            //TODO: need to work on this
-            System.out.println("success");
+            String dateInputed = searchbox.getText().trim();
+            LinkedList<Event> list = Scripts.DateStorage.getMerge(dateInputed);
+            Execution.Main.getGui().showDate(dateInputed, list,true);
         }
     }
 

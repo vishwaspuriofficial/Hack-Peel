@@ -83,7 +83,12 @@ public class DateStorage {
     public static LinkedList<Event> getMerge(String _date) {
 
         HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
-        LinkedList<Event> mainEvents = (LinkedList<Event>) plannedDatesData.get(_date).clone();
+        LinkedList<Event> mainEvents = (LinkedList<Event>) plannedDatesData.get(_date);
+        if (mainEvents == null) {
+            mainEvents = new LinkedList<>();
+        } else {
+            mainEvents = (LinkedList<Event>) mainEvents.clone();
+        }
         LinkedList<Event> repeatedEvents = Main.getRepeatingEvents();
 
         String[] splitted = _date.split("/");

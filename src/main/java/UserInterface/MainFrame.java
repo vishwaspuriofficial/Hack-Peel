@@ -101,15 +101,6 @@ public class MainFrame extends JFrame{
         suggestion1.setSuggestionNumber("1");
         suggestion1.setNextSuggestion("4");
         suggestion1.setPreviousSuggestion("5");
-        for (Event event : solutions[0]) {
-            System.out.println(event.getTitle());
-        }
-        for (Event event : solutions[1]) {
-            System.out.println(event.getTitle());
-        }
-        for (Event event : solutions[2]) {
-            System.out.println(event.getTitle());
-        }
 
         suggestion2.setDate(solutionDate, solutions[1], false);
         suggestion2.setSuggestionNumber("2");
