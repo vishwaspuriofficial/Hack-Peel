@@ -120,6 +120,15 @@ public class DateStorage {
         ArrayList<Float> busyTimeSlots = new ArrayList<>();
         ArrayList<Float> availableTimeSlots = new ArrayList<>();
 
+
+        ArrayList<Event> dynamicEvents = new ArrayList<>();
+        if (_event.dynamic) {
+            dynamicEvents.add(_event);
+        }
+        else {
+            mainEvents.add(_event);
+        }
+
         //Getting the dates from string to float, and storing all these busy slots to start time lst
         for (Event event : mainEvents) {
             if (!event.dynamic) {
@@ -162,14 +171,18 @@ public class DateStorage {
 
 
 
-        ArrayList<Event> dynamicEvents = new ArrayList<>();
+
+
 
         for (Event e : mainEvents) {
             if (e.dynamic) {
                 dynamicEvents.add(e);
             }
         }
-        dynamicEvents.add(_event);
+
+
+
+
 
         //Solution 1: Random
         for (Event e : dynamicEvents) {
@@ -197,6 +210,9 @@ public class DateStorage {
             }
             if(s2.contains(_event)){
                 s2.set(s2.indexOf(result),result);
+
+                //1 -
+
             }
             else{
                 s2.add(_event);
@@ -262,13 +278,10 @@ public class DateStorage {
 
             //Index of Ending time
 
-            int sh = (int) s ;
-            //Starting Hour
-            float sm = Math.abs(sh - availableTimeSlots.get(s));
-            //Starting Min
+            float sh = availableTimeSlots.get(s) ;
 
             //make exact time sh:sm
-            int smt = setDecimal(sm);
+            int smt = setDecimal(sh);
 
             //make exact time eh:em
             int eh = (int) e;
@@ -276,8 +289,9 @@ public class DateStorage {
 
             int emt = setDecimal(em);
 
+
             //String times
-            String startTime = String.valueOf(sh) + ":" + String.valueOf(smt);
+            String startTime = String.valueOf((int) sh) + ":" + String.valueOf(smt);
             String endTime = String.valueOf(eh) + ":" + String.valueOf(emt);
             //COnverting to datesformat
             DateFormat df = new SimpleDateFormat("hh:mm");

@@ -84,8 +84,8 @@ public class MainFrame extends JFrame{
     //Test Case
     public static void test() throws ParseException, CloneNotSupportedException {
         LinkedList<Event> event= new LinkedList<Event>();
-        Event _test = new Event("EyLmao","30/05/2022","00:00","00:30",new ArrayList<>(Arrays.asList("1","2")),4, false);
-        Event _test2 = new Event("GYY","30/05/2022","00:30","01:00",new ArrayList<>(Arrays.asList("1","2")),4,true);
+        Event _test = new Event("EyLmao","30/05/2022","00:00","00:30",new ArrayList<>(Arrays.asList("1","2")),3, false);
+        Event _test2 = new Event("GYY","30/05/2022","00:30","01:00",new ArrayList<>(Arrays.asList("1","2")),1,true);
         Event _test3 = new Event("ABruv","30/05/2022","01:30","02:00",new ArrayList<>(Arrays.asList("1","2")),4,true);
         Event testToAdd = new Event("lool","30/05/2022","5:00","5:30",new ArrayList<>(Arrays.asList("1","2")),10,true);
 
