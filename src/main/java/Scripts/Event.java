@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 
 
-public class Event implements Cloneable{
+public class Event implements Cloneable,Comparable<Event>{
     String title;
     String startTime;
     String endTime;
@@ -62,8 +62,13 @@ public class Event implements Cloneable{
     public int getTimeInterval() {
         return timeInterval;
     }
-
     public boolean getDynamic() {
         return dynamic;
     }
+
+    @Override
+    public int compareTo(Event o) {
+        return this.stressLevel-o.stressLevel;
+    }
+
 }

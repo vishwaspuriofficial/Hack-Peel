@@ -3,7 +3,6 @@ package UserInterface;
 import Execution.Main;
 import Scripts.DateStorage;
 import Scripts.Event;
-import static Assets.Pallete.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +24,7 @@ public class MainFrame extends JFrame{
         this.setResizable(false);
         this.setTitle("Optistrads");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.colorTheme();
+        this.setVisible(true);
 
         calendarPanel = new CalendarPanel();
         datePanel = new DatePanel();
@@ -44,6 +43,7 @@ public class MainFrame extends JFrame{
         this.setVisible(true);
 //        test(); //TEST CASE
     }
+    
 
     public void changePanel(String target) {
         cardLayout.show(content, target);
@@ -55,7 +55,7 @@ public class MainFrame extends JFrame{
     }
 
     public void colorTheme() {
-        this.setBackground(dmainBackColor);
+
     }
 
     public DatePanel getDatePanel() {
@@ -74,19 +74,8 @@ public class MainFrame extends JFrame{
 //        System.out.println(Main.getPlannedDatesData());
 //    }
 
-//    public void test() throws ParseException, CloneNotSupportedException {
-//        LinkedList<Event> event= new LinkedList<Event>();
-//        Event _test = new Event("EyLmao","30/05/2022","00:00",":30",new ArrayList<>(Arrays.asList("1","2")),4);
-//        Event testToAdd = new Event("GYY","30/05/2022","10:00","10:30",new ArrayList<>(Arrays.asList("1","2")),4);
-//        event.add(_test);
-//        DateStorage.addEventToDate(event);
-//        LinkedList<Event>[] solutions = DateStorage.getSuggestions("30/05/2022",testToAdd);
-//        System.out.println("I made it bruv");
-//        for (Event e : solutions[0]) {
-//           System.out.println(e.getTitle()+" "+e.getStartTime()+" "+e.getEndTime());
-//        }
 //
-//    }
+
 
 
 }

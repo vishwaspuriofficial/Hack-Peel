@@ -18,22 +18,21 @@ import java.io.FileWriter;
 public class DateStorage {
     ArrayList<Event> events;
 
-    public DateStorage(ArrayList<Event> _events){
+    public DateStorage(ArrayList<Event> _events) {
         events = _events;
     }
 
 
-    public ArrayList<Event> getEvents(){
+    public ArrayList<Event> getEvents() {
         ArrayList<Event> _event = new ArrayList<>();
 
         Event curEvent = events.get(0);
-        for(int i = 0; i < events.size()-1; i++){
-            if(curEvent.title.equals(events.get(i+1).title)){ //If Adj is equal, add the time
+        for (int i = 0; i < events.size() - 1; i++) {
+            if (curEvent.title.equals(events.get(i + 1).title)) { //If Adj is equal, add the time
                 curEvent.timeInterval += 30;
-            }
-            else{
+            } else {
                 _event.add(curEvent);
-                curEvent = events.get(i+1);
+                curEvent = events.get(i + 1);
             }
         }
 
@@ -42,20 +41,20 @@ public class DateStorage {
     }
 
 
-
-    public static void addEventToDate(LinkedList<Event> _event) throws ParseException {
+    public static LinkedList<Event>[] addEventToDate(LinkedList<Event> _event) throws ParseException, CloneNotSupportedException {
         HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
         plannedDatesData.put(_event.get(0).getDate(), _event);
+        return getSuggestions(_event.get(0).getDate(), _event.get(0));
     }
 
-    public static void deleteEventAtDate(String date, LinkedList<Event> _event){
+    public static void deleteEventAtDate(String date, LinkedList<Event> _event) {
         HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
-        plannedDatesData.remove(date,_event);
+        plannedDatesData.remove(date, _event);
     }
 
-    public static int getEventDay(LocalDate date){
+    public static int getEventDay(LocalDate date) {
         int eventDay = 0;
-        switch(date.getDayOfWeek().toString()){
+        switch (date.getDayOfWeek().toString()) {
             case "MONDAY":
                 eventDay = 1;
                 break;
@@ -81,7 +80,7 @@ public class DateStorage {
         return eventDay;
     }
 
-    public static LinkedList<Event> getMerge(String _date){
+    public static LinkedList<Event> getMerge(String _date) {
 
         HashMap<String, LinkedList<Event>> plannedDatesData = Main.getPlannedDatesData();
         LinkedList<Event> mainEvents = (LinkedList<Event>) plannedDatesData.get(_date).clone();
@@ -97,9 +96,9 @@ public class DateStorage {
         int eventDay = getEventDay(date);
 
         //Merge repeated and main events
-        for(Event event : repeatedEvents) {
-            for (String repeatDay : event.repeatDate){
-                if(Integer.parseInt(repeatDay) == eventDay)//Check to see if main events list of the date chosen requires the merge of repeated events
+        for (Event event : repeatedEvents) {
+            for (String repeatDay : event.repeatDate) {
+                if (Integer.parseInt(repeatDay) == eventDay)//Check to see if main events list of the date chosen requires the merge of repeated events
                 {
                     mainEvents.add(event); //Adds
                 }
@@ -108,25 +107,25 @@ public class DateStorage {
         return mainEvents;
     }
 
-    public static LinkedList<Event>[] getSuggestions(String _date, Event _event) throws CloneNotSupportedException {
+    public static LinkedList<Event>[] getSuggestions(String _date, Event _event) throws CloneNotSupportedException, ParseException {
         LinkedList<Event> mainEvents = getMerge(_date);
 
         //Algorithm part
-        ArrayList<Float> startTimeLst = new ArrayList<>();
+        ArrayList<Float> busyTimeSlots = new ArrayList<>();
         ArrayList<Float> availableTimeSlots = new ArrayList<>();
 
         //Getting the dates from string to float, and storing all these busy slots to start time lst
-        for(Event event : mainEvents){
-                String[] split = event.startTime.split(":");
-                float hour = Float.parseFloat(split[0]);
-                float minute = Float.parseFloat((split[1]))/10;
-                if(minute == 0.3){
-                    minute += 0.2;
-                }
-                float time = hour+minute;
-            startTimeLst.add(time);
+        for (Event event : mainEvents) {
+            String[] split = event.startTime.split(":");
+            float hour = Float.parseFloat(split[0]);
+            float minute = Float.parseFloat((split[1])) / 10;
+            if (minute == 0.3) {
+                minute += 0.2;
+            }
+            float time = hour + minute;
+            busyTimeSlots.add(time);
         }
-        Collections.sort(startTimeLst);
+        Collections.sort(busyTimeSlots);
 
 
         //Find all open timeslots
@@ -135,14 +134,13 @@ public class DateStorage {
         //Very high potential to be very bad (just smth in case I can't find a better solution)
         int x = 0;
         Boolean stop = false;
-        while(currentTime != 48) {
+        while (currentTime != 48) {
 
-            if(x != startTimeLst.size()) {
-                if (currentTime == startTimeLst.get(x)) {
+            if (x != busyTimeSlots.size()) {
+                if (currentTime == busyTimeSlots.get(x)) {
                     x++;
                 }
-            }
-            else {
+            } else {
                 availableTimeSlots.add(currentTime);
             }
             currentTime += 0.50;
@@ -150,46 +148,147 @@ public class DateStorage {
 
 
         //preparing the list of possible solutions
-        LinkedList<Event>[] possibleSolutions = new LinkedList[2];
-        Arrays.fill(possibleSolutions, mainEvents.clone());
-        ArrayList<Float> maybeTimeSlots = new ArrayList<Float>();
+        LinkedList<Event>[] possibleSolutions = new LinkedList[3];
+        LinkedList<Event> s1 = (LinkedList<Event>) mainEvents.clone();
+        LinkedList<Event> s2 = (LinkedList<Event>) mainEvents.clone();
+        LinkedList<Event> s3 = (LinkedList<Event>) mainEvents.clone();
 
-        //Get Possible solutions from list of open timeslots, *Get them 1-4 hours away from each other* (if events are static)
-        int space = 0;
-        int solutionIndex = 0;
-        for(int i = 0; i < availableTimeSlots.size(); i++){
-            if(solutionIndex == 2){
-                break;
-            }
-
-            if(space == 0){
-
-                Event solEvent = (Event) _event.clone();
-                float newStartTime = availableTimeSlots.get(i);
-                float newEndTime;
-                if(newStartTime - (newStartTime-0.5f) == 0.5){
-                    newStartTime -= 0.20;
-                }
-                newEndTime = newStartTime + 0.30f;
-                solEvent.startTime = String.valueOf(newStartTime).replace(".",":");
-                solEvent.endTime = String.valueOf(newEndTime).replace(".",":");
+        possibleSolutions[0] = s1;
+        possibleSolutions[1] = s2;
+        possibleSolutions[2] = s3;
 
 
 
-                possibleSolutions[solutionIndex].add(solEvent);
+        ArrayList<Event> dynamicEvents = new ArrayList<>();
 
-                solutionIndex += 1;
-                space = 5;
-            }
-            else{
-                space -= 1;
-                maybeTimeSlots.add(availableTimeSlots.get(i));
+        for (Event e : mainEvents) {
+            if (e.dynamic) {
+                dynamicEvents.add(e);
             }
         }
+        dynamicEvents.add(_event);
 
+        //Solution 1: Random
+        for (Event e : dynamicEvents) {
+            Event result = setPosition(e, availableTimeSlots);
+            if (result ==null) {
+                s1=null;
+                break;
+            }
+            s1.add(result);
+        }
+
+        //Solution 2: Easy To Hard
+        Collections.sort(dynamicEvents); //
+
+        for (Event e : dynamicEvents) {
+            Event result = setPosition(e, availableTimeSlots);
+            if (result ==null) {
+                s2=null;
+                break;
+            }
+            s2.add(result);
+        }
+
+        //Solution 3: Hard To Easy
+        Collections.sort(dynamicEvents,Collections.reverseOrder()); //
+
+        for (Event e : dynamicEvents) {
+            Event result = setPosition(e, availableTimeSlots);
+            if (result ==null) {
+                s3=null;
+                break;
+            }
+            s3.add(result);
+        }
         return possibleSolutions;
     }
 
 
-    
+
+    public static Event setPosition(Event _event, ArrayList<Float> availableTimeSlots) throws ParseException, CloneNotSupportedException {
+        int i = 0;
+        while (i < availableTimeSlots.size()) {
+
+            int stm = Integer.parseInt(_event.startTime.split(":")[0]);
+            int sth = Integer.parseInt(_event.startTime.split(":")[1]);
+            int st = sth * 60 + stm;
+
+            int etm = Integer.parseInt(_event.endTime.split(":")[0]);
+            int eth = Integer.parseInt(_event.endTime.split(":")[1]);
+            int et = eth * 60 + etm;
+
+            int t = st - et;
+            int ti = Integer.valueOf(t / 30);
+
+            float ct = availableTimeSlots.get(i);
+
+            //Finds if the time slots for the amount of time after a time slot is empty
+            for (float z = ct; z < ct + (ti * 0.5); z += 0.5) {
+                if (!availableTimeSlots.contains(z)) {
+                    i += ti;
+                    break;
+                }
+            }
+
+            //Success
+            //1: Proper Time format to event
+            //2: Remove from Available Time Slot
+
+            float s = availableTimeSlots.get((int) ct);
+            float e = availableTimeSlots.get((int) (ct + (ti * 0.5)));
+
+            int sh = (int) s;
+            float sm = s - sh;
+
+            sm = setDecimal(sm);
+            if (sm == 0) {
+                sh += 1;
+            }
+
+            int eh = (int) e;
+            float em = e - eh;
+
+            em = setDecimal(em);
+            if (em == 0) {
+                eh += 1;
+            }
+
+            String startTime = String.valueOf(sh) + ":" + String.valueOf(sm);
+            String endTime = String.valueOf(eh) + ":" + String.valueOf(em);
+            DateFormat df = new SimpleDateFormat("hh:mm");
+            Date ST = df.parse(startTime);
+            Date ET = df.parse(endTime);
+
+            Event EVENT = (Event) _event.clone();
+            EVENT.startTime = String.valueOf(ST);
+            EVENT.endTime = String.valueOf(ET);
+
+            //Remove from available time slot
+            for (float y = ct; y <= (ct + (ti * 0.5)); y++) {
+                availableTimeSlots.remove(y);
+            }
+
+            //Add times to busy time slot
+//            for (float y=ct; y<=(ct + (ti * 0.5)); y++) {
+//                busyTimeSlots.remove(y);
+//            }
+            return EVENT;
+        }
+        return null; //This means no time slot available
+
+    }
+    public static int setDecimal(float value){
+        if(value==0.5){
+            return 30;
+        }
+        else{
+            return 0;
+        }
+    }
 }
+
+
+
+    
+
