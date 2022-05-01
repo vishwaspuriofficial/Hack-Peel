@@ -654,9 +654,9 @@ public class DatePanel extends JPanel implements ActionListener{
             if (dyn) {
                 inEventStart.setText("00:00");
             }
+
             Event newEvent = new Event(inEventTitle.getText(), date, inEventStart.getText(), inEventEnd.getText(), repeatList, level, dyn);
-            System.out.println(inEventStart.getText());
-            System.out.println(inEventEnd.getText());
+            if (repeatList.isEmpty()) {Execution.Main.getRepeatingEvents().add(newEvent);}
             menuPanel.setVisible(menuUp = false);
             try {
                 Execution.Main.getGui().setSolutions(Scripts.DateStorage.getSuggestions(date, newEvent));
