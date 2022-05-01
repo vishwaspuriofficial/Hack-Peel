@@ -17,7 +17,7 @@ public class MainFrame extends JFrame{
     public MainFrame() {
         this.setSize(new Dimension(1200, 800));
         this.setResizable(false);
-        this.setTitle("Day Planner");
+        this.setTitle("Optistrads");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
 
@@ -42,9 +42,8 @@ public class MainFrame extends JFrame{
         cardLayout.show(content, target);
     }
 
-    //FIXME: give the method correct param
-    public void showDate(LinkedList<Event> plans) {
-        datePanel.setDate(plans);
+    public void showDate(String date, LinkedList<Event> plans, boolean isSetSolution) {
+        datePanel.setDate(date, plans, isSetSolution);
         this.changePanel("2");
     }
 
@@ -52,4 +51,7 @@ public class MainFrame extends JFrame{
 
     }
 
+    public DatePanel getDatePanel() {
+        return datePanel;
+    }
 }

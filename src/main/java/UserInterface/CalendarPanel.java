@@ -51,7 +51,6 @@ public class CalendarPanel extends JPanel implements ActionListener {
         message.setOpaque(true);
 
         scrollList = new JScrollPane(scrollPaneContainer, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollList.setLayout(new ScrollPaneLayout());
         scrollList.setPreferredSize(new Dimension(800, 450));
         scrollList.getVerticalScrollBar().setUnitIncrement(10);
 
@@ -92,6 +91,7 @@ public class CalendarPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()== searchButton || e.getSource()==searchbox) {
+            //TODO: need to work on this
             System.out.println("success");
         }
     }
@@ -155,7 +155,7 @@ public class CalendarPanel extends JPanel implements ActionListener {
             getDate.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Execution.Main.getGui().showDate(plans);
+                    Execution.Main.getGui().showDate(date, plans, true);
                 }
             });
             this.add(dateLabel);
