@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Executable;
 import java.security.DigestException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -244,7 +245,7 @@ public class DatePanel extends JPanel implements ActionListener{
         eventType = new ButtonGroup();
         eventType.add(staticEvent);
         eventType.add(dynamicEvent);
-        eventType.setSelected(dynamicEvent.getModel(), true);
+        eventType.setSelected(staticEvent.getModel(), true);
 
         addEventStart = new JLabel("Event Start Time:");
         addEventStart.setFont(new Font("Georgia", Font.PLAIN, 24));
@@ -634,7 +635,6 @@ public class DatePanel extends JPanel implements ActionListener{
         } else if (e.getSource()==cancel && menuUp) {
             menuPanel.setVisible(menuUp = false);
         } else if (e.getSource()==confirm) {
-            //TODO:
             ArrayList<String> repeatList = new ArrayList<>();
             if (mon.isSelected()) repeatList.add("1");
             if (tue.isSelected()) repeatList.add("2");
@@ -643,7 +643,29 @@ public class DatePanel extends JPanel implements ActionListener{
             if (fri.isSelected()) repeatList.add("5");
             if (sat.isSelected()) repeatList.add("6");
             if (sun.isSelected()) repeatList.add("7");
-//            Event newEvent = new Event(inEventTitle.getText(), date, inEventStart.getText(), inEventEnd.getText(), repeatList, )
+            int level = 1;
+            if (levelOne.isSelected()) level = 1;
+            if (levelTwo.isSelected()) level = 2;
+            if (levelThree.isSelected()) level = 3;
+            if (levelFour.isSelected()) level = 4;
+            if (levelFive.isSelected()) level = 5;
+            boolean dyn;
+            dyn = dynamicEvent.isSelected();
+            if (dyn) {
+                inEventStart.setText("00:00");
+            }
+            Event newEvent = new Event(inEventTitle.getText(), date, inEventStart.getText(), inEventEnd.getText(), repeatList, level, dyn);
+            System.out.println(inEventStart.getText());
+            System.out.println(inEventEnd.getText());
+            menuPanel.setVisible(menuUp = false);
+            try {
+                Execution.Main.getGui().setSolutions(Scripts.DateStorage.getSuggestions(date, newEvent));
+                Execution.Main.getGui().setSolutionDate(date);
+            } catch (CloneNotSupportedException ex) {
+                ex.printStackTrace();
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
         } else if (e.getSource()==staticEvent && menuUp) {
             inEventStart.setText("hh:mm (24 hours time)");
             addEventEnd.setText("Event End Time:");

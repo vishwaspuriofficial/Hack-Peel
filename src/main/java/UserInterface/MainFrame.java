@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,17 +20,32 @@ public class MainFrame extends JFrame{
     private CardLayout cardLayout = new CardLayout();
     private JPanel content;
     private CalendarPanel calendarPanel;
-    private DatePanel datePanel;
+    private DatePanel datePanel, suggestion1, suggestion2, suggestion3;
+    private LinkedList<Event>[] solutions;
+    private String solutionDate;
 
     public MainFrame() throws ParseException, CloneNotSupportedException {
         this.setSize(new Dimension(1200, 800));
         this.setResizable(false);
         this.setTitle("Optistrads");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        this.addWindowListener(new WindowAdapter() {
+//            public void windowClosing(WindowEvent e) {
+//                System.out.println("closing");
+//                try {
+//                    //TODO: save file method here
+//                } catch (IOException ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+//        });
         this.setVisible(true);
 
         calendarPanel = new CalendarPanel();
         datePanel = new DatePanel();
+        suggestion1 = new DatePanel();
+        suggestion2 = new DatePanel();
+        suggestion3 = new DatePanel();
 
         content = new JPanel();
         content.setPreferredSize(new Dimension(700, 600));
@@ -43,7 +61,8 @@ public class MainFrame extends JFrame{
         this.setVisible(true);
 //        test(); //TEST CASE
     }
-    
+
+
 
     public void changePanel(String target) {
         cardLayout.show(content, target);
@@ -52,10 +71,6 @@ public class MainFrame extends JFrame{
     public void showDate(String date, LinkedList<Event> plans, boolean isSetSolution) {
         datePanel.setDate(date, plans, isSetSolution);
         this.changePanel("2");
-    }
-
-    public void colorTheme() {
-
     }
 
     public DatePanel getDatePanel() {
@@ -76,6 +91,26 @@ public class MainFrame extends JFrame{
 
 //
 
+    public void addSuggested() {
+        suggestion1.setDate(solutionDate, solutions[0], false);
+        suggestion2.setDate(solutionDate, solutions[1], false);
+        suggestion3.setDate(solutionDate, solutions[2], false);
 
+    }
 
+    public LinkedList<Event>[] getSolutions() {
+        return solutions;
+    }
+
+    public void setSolutions(LinkedList<Event>[] solutions) {
+        this.solutions = solutions;
+    }
+
+    public String getSolutionDate() {
+        return solutionDate;
+    }
+
+    public void setSolutionDate(String solutionDate) {
+        this.solutionDate = solutionDate;
+    }
 }
