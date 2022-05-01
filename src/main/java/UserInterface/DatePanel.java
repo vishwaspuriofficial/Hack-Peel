@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Executable;
 import java.security.DigestException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -243,6 +244,7 @@ public class DatePanel extends JPanel implements ActionListener{
         eventType = new ButtonGroup();
         eventType.add(staticEvent);
         eventType.add(dynamicEvent);
+        eventType.setSelected(dynamicEvent.getModel(), true);
 
         addEventStart = new JLabel("Event Start Time:");
         addEventStart.setFont(new Font("Georgia", Font.PLAIN, 24));
@@ -344,6 +346,7 @@ public class DatePanel extends JPanel implements ActionListener{
         eventLevel.add(levelThree);
         eventLevel.add(levelFour);
         eventLevel.add(levelFive);
+        eventLevel.setSelected(levelOne.getModel(), true);
         heightC++; marginC++; sectionC++;
 
         cancel = new JButton("cancel");
@@ -616,16 +619,22 @@ public class DatePanel extends JPanel implements ActionListener{
             menuPanel.setVisible(menuUp = false);
         } else if (e.getSource()==confirm) {
             //TODO:
-//            Event newEvent = new Event(inEventTitle.getText(), date, )
+            ArrayList<String> repeatList = new ArrayList<>();
+            if (mon.isSelected()) repeatList.add("1");
+            if (tue.isSelected()) repeatList.add("2");
+            if (wed.isSelected()) repeatList.add("3");
+            if (thu.isSelected()) repeatList.add("4");
+            if (fri.isSelected()) repeatList.add("5");
+            if (sat.isSelected()) repeatList.add("6");
+            if (sun.isSelected()) repeatList.add("7");
+//            Event newEvent = new Event(inEventTitle.getText(), date, inEventStart.getText(), inEventEnd.getText(), repeatList, )
         } else if (e.getSource()==staticEvent && menuUp) {
-            System.out.println("static");
             inEventStart.setText("hh:mm (24 hours time)");
             addEventEnd.setText("Event End Time:");
             inEventEnd.setText("hh:mm (24 hours time)");
             inEventStart.setEnabled(true);
             inEventEnd.setEnabled(true);
         } else if (e.getSource()==dynamicEvent && menuUp) {
-            System.out.println("dynamic");
             inEventStart.setText("Disabled due to dynamic event type");
             addEventEnd.setText("Length of event:");
             inEventEnd.setText("enter the length of event in hh:mm format");
