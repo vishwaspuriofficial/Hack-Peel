@@ -1,8 +1,10 @@
 package Execution;
 
 import Scripts.Event;
+import UserInterface.CalendarPanel;
 import UserInterface.MainFrame;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.*;
 import java.io.*;
@@ -16,10 +18,6 @@ public class Main {
         loadMainSave();
         loadRepeatedDays();
         gui = new MainFrame();
-//        Event test = new Event("Gym","30/04/2022","10:00","10:30",new ArrayList<>(Arrays.asList("1","2")),4,true);
-
-        //saveEvent(test);
-        //saveRepeatedEvent(test);
     }
 
     public static MainFrame getGui() {
@@ -33,6 +31,7 @@ public class Main {
     public static LinkedList<Event> getRepeatingEvents() {
         return repeatingEvents;
     }
+
 
     public static void loadMainSave() throws IOException {
         File file = new File("src/main/java/Databases/mainsave.txt");
@@ -50,8 +49,10 @@ public class Main {
             }
             line = br.readLine();
         }
+        br.close();
 
     }
+
 
     public static void loadRepeatedDays() throws IOException {
         String path = "src/main/java/Databases/repeat.txt";
@@ -61,55 +62,47 @@ public class Main {
         String line = br.readLine();
         while (line!= null) {
             if (line.charAt(0)=='#') {
-                String eventName = line.split("# ")[0];
+                String eventName = line.replace("#", "");
                 String[] data = br.readLine().split("∂");
                 String[] repeat = data[3].split(",");
                 ArrayList<String> repeatedDays = new ArrayList<>(Arrays.asList(repeat));
-                String[] link = data[4].split(",");
-                ArrayList<String> linkedEvents = new ArrayList<>(Arrays.asList(link));
-                Event event = new Event(eventName,data[0],data[1],data[2],repeatedDays,Integer.parseInt(data[5]),Boolean.parseBoolean(data[6]));
+                Event event = new Event(eventName,
+                        data[0],
+                        data[1],
+                        data[2],
+                        repeatedDays,
+                        Integer.parseInt(data[4]),
+                        Boolean.parseBoolean(data[5]));
                 repeatingEvents.add(event);
             }
             line = br.readLine();
         }
-    }
-    public static void saveEvent(Event event) throws IOException {
-
-        //Deletes original content of file
-        PrintWriter pw = new PrintWriter(new FileOutputStream("src/main/java/Databases/mainsave.txt", false));
-
-        //Overwrites the content
-        FileWriter file = new FileWriter("src/main/java/Databases/mainsave.txt",true);
-        PrintWriter write = new PrintWriter(file);
-        write.print("#"+event.getDate());
-
-        String[] repeatDates = event.getRepeatDate().toArray(new String[0]);
-        String repeat = String.join(",", repeatDates);
-
-        write.print("\n"+event.getTitle()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeat+"∂"+event.getStressLevel()+"∂"+event.getDynamic()+"\n");
-
-        write.close();
+        br.close();
     }
 
 
-    public static void saveRepeatedEvent(Event event) throws IOException {
-        //Deletes original content of file
-        PrintWriter pw = new PrintWriter(new FileOutputStream("src/main/java/Databases/repeat.txt", false));
-
-        //Overwrites the content
-        FileWriter file = new FileWriter("src/main/java/Databases/repeat.txt",true);
-        PrintWriter write = new PrintWriter(file);
-
-        write.print("#"+event.getTitle());
-
-
-        String[] repeatDates = event.getRepeatDate().toArray(new String[0]);
-        String repeat = String.join(",", repeatDates);
-
-        write.print("\n"+event.getDate()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeat+"∂"+event.getStressLevel()+"∂"+event.getDynamic()+"\n");
-
-        write.close();
+    public static void saveEvent() throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter("src/main/java/Databases/mainsave.txt"));
+        for (String key : plannedDatesData.keySet()) {
+            bw.write("#"+key+"\n");
+            for (Event event : plannedDatesData.get(key)) {
+                String repeatPattern = String.join(",", event.getRepeatDate().toArray(new String[0]));
+                String jointData = event.getTitle()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeatPattern+"∂"+event.getStressLevel()+"∂"+event.getDynamic();
+                bw.write(jointData +"\n");
+            }
+        }
+        bw.close();
     }
 
 
+    public static void saveRepeatedEvent() throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter("src/main/java/Databases/repeat.txt"));
+        for (Event event : repeatingEvents) {
+            bw.write("#"+event.getTitle()+"\n");
+            String repeatPattern = String.join(",", event.getRepeatDate().toArray(new String[0]));
+            String jointData = event.getDate()+"∂"+event.getStartTime()+"∂"+event.getEndTime()+"∂"+repeatPattern+"∂"+event.getStressLevel()+"∂"+event.getDynamic();
+            bw.write(jointData);
+        }
+        bw.close();
+    }
 }
