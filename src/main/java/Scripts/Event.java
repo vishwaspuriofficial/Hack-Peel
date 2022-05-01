@@ -20,13 +20,15 @@ public class Event implements Cloneable{
     int stressLevel;
     int timeInterval = 30;
 
-    public Event(String _title, String _date, String _startTime, String _endTime, ArrayList<String> _repeatDate, int _stressLevel){
+    boolean dynamic;
+    public Event(String _title, String _date, String _startTime, String _endTime, ArrayList<String> _repeatDate, int _stressLevel, boolean _dynamic){
         title = _title;
         date = _date;
         startTime = _startTime;
         endTime = _endTime;
         repeatDate = _repeatDate;
         stressLevel = _stressLevel;
+        dynamic = _dynamic;
     }
 
     public Object clone() throws CloneNotSupportedException
