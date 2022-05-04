@@ -1,5 +1,9 @@
-Hack Peel: 
+Made for Hack Peel Hackathon
 
 Collaborators: Vishwas, Shaya, Alex, Rafi
 
-Hopefully all goes well
+The project was built using Java and the Swing framework.
+
+Watch our trailer at https://youtu.be/9BX8ke1c6oU 
+
+For more information: https://devpost.com/software/optistrads
